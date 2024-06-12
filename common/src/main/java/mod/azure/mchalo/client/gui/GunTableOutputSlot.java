@@ -46,10 +46,10 @@ public class GunTableOutputSlot extends Slot {
         this.checkTakeAchievements(stack);
         var optionalGunTableRecipe = player.level().getRecipeManager().getRecipeFor(Type.INSTANCE, gunTableInventory, player.level());
         if (optionalGunTableRecipe.isPresent()) {
-            var gunTableRecipe = optionalGunTableRecipe.get();
+            var gunTableRecipe = optionalGunTableRecipe.get().value();
             var defaultedList = gunTableRecipe.getRemainingItems(gunTableInventory);
 
-            for (var i = 0; i < defaultedList.size(); ++i) {
+            for (int i = 0; i < defaultedList.size(); ++i) {
                 var itemStack = this.gunTableInventory.getItem(i);
                 var itemStack2 = defaultedList.get(i);
                 if (!itemStack.isEmpty()) {
@@ -57,11 +57,14 @@ public class GunTableOutputSlot extends Slot {
                     itemStack = this.gunTableInventory.getItem(i);
                 }
 
-                if (!itemStack2.isEmpty()) if (itemStack.isEmpty()) this.gunTableInventory.setItem(i, itemStack2);
-                else if (ItemStack.isSameItem(itemStack, itemStack2) && ItemStack.isSameItemSameTags(itemStack, itemStack2)) {
-                    itemStack2.grow(itemStack.getCount());
-                    this.gunTableInventory.setItem(i, itemStack2);
-                } else if (!this.player.getInventory().add(itemStack2)) this.player.drop(itemStack2, false);
+                if (!itemStack2.isEmpty())
+                    if (itemStack.isEmpty())
+                        this.gunTableInventory.setItem(i, itemStack2);
+                    else if (ItemStack.isSameItem(itemStack, itemStack2) && ItemStack.isSameItemSameComponents(itemStack, itemStack2)) {
+                        itemStack2.grow(itemStack.getCount());
+                        this.gunTableInventory.setItem(i, itemStack2);
+                    } else if (!this.player.getInventory().add(itemStack2))
+                        this.player.drop(itemStack2, false);
             }
         }
         this.setChanged();

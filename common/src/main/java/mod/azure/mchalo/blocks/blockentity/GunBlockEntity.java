@@ -4,6 +4,7 @@ import mod.azure.mchalo.blocks.ImplementedInventory;
 import mod.azure.mchalo.client.gui.GunTableScreenHandler;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -27,15 +28,15 @@ public class GunBlockEntity extends BlockEntity implements ImplementedInventory,
     }
 
     @Override
-    public void load(@NotNull CompoundTag nbt) {
-        super.load(nbt);
-        ContainerHelper.loadAllItems(nbt, items);
+    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.loadAdditional(tag, registries);
+        ContainerHelper.loadAllItems(tag, items, registries);
     }
 
     @Override
-    public void saveAdditional(@NotNull CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, items);
+    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.saveAdditional(tag, registries);
+        ContainerHelper.saveAllItems(tag, items, registries);
     }
 
     @Override

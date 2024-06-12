@@ -1,14 +1,15 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.animatable.GeoEntity;
+import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
+import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
+import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.azurelib.network.packet.EntityPacket;
-import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -40,18 +41,8 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     }
 
     public NeedleEntity(Level world, LivingEntity owner, Float damage) {
-        super(Services.ENTITIES_HELPER.getNeedleEntity(), owner, world);
+        super(Services.ENTITIES_HELPER.getNeedleEntity(), world);
         bulletdamage = damage;
-    }
-
-    protected NeedleEntity(EntityType<? extends NeedleEntity> type, double x, double y, double z, Level world) {
-        this(type, world);
-    }
-
-    protected NeedleEntity(EntityType<? extends NeedleEntity> type, LivingEntity owner, Level world) {
-        this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
-        this.setOwner(owner);
-        if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
     @Override
@@ -65,8 +56,13 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return EntityPacket.createPacket(this);
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putShort("life", (short)this.tickCount);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        this.tickCount = tag.getShort("life");
     }
 
     @Override
@@ -177,6 +173,11 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
+        return Items.AIR.getDefaultInstance();
     }
 
 }

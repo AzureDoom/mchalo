@@ -27,7 +27,7 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
     private void blockMending(CallbackInfo ci) {
         var leftStack = this.inputSlots.getItem(0).copy();
         var rightStack = this.inputSlots.getItem(1).copy();
-        if ((leftStack.getItem() instanceof HaloGunBase || leftStack.getItem() instanceof EnergySwordItem || leftStack.getItem() instanceof PropShieldItem) && (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, rightStack) > 0 || EnchantmentHelper.getEnchantments(rightStack).containsKey(Enchantments.MENDING) || EnchantmentHelper.getEnchantments(rightStack).containsKey(Enchantments.UNBREAKING))) {
+        if ((leftStack.getItem() instanceof HaloGunBase || leftStack.getItem() instanceof EnergySwordItem || leftStack.getItem() instanceof PropShieldItem) && (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, rightStack) > 0)) {
             var repaired = ItemStack.EMPTY;
             this.resultSlots.setItem(0, repaired);
             this.broadcastChanges();

@@ -1,6 +1,7 @@
 package mod.azure.mchalo.helper;
 
-import mod.azure.azurelib.entities.TickingLightEntity;
+import mod.azure.azurelib.common.internal.common.blocks.TickingLightEntity;
+import mod.azure.azurelib.common.platform.Services;
 import mod.azure.mchalo.entity.projectiles.*;
 import mod.azure.mchalo.item.HaloGunBase;
 import net.minecraft.core.BlockPos;
@@ -61,7 +62,7 @@ public class CommonHelper {
         if (lightBlockPos == null) {
             lightBlockPos = CommonHelper.findFreeSpace(entity.level(), entity.blockPosition());
             if (lightBlockPos == null) return;
-            entity.level().setBlockAndUpdate(lightBlockPos, mod.azure.azurelib.platform.Services.PLATFORM.getTickingLightBlock().defaultBlockState());
+            entity.level().setBlockAndUpdate(lightBlockPos, Services.PLATFORM.getTickingLightBlock().defaultBlockState());
         } else if (CommonHelper.checkDistance(lightBlockPos, entity.blockPosition()) && entity.level().getBlockEntity(lightBlockPos) instanceof TickingLightEntity tickingLightEntity) {
             tickingLightEntity.refresh(isInWaterBlock ? 20 : 0);
         }
@@ -85,19 +86,19 @@ public class CommonHelper {
                 for (var z : offsets) {
                     var offsetPos = blockPos.offset(x, y, z);
                     var state = world.getBlockState(offsetPos);
-                    if (state.isAir() || state.getBlock().equals(mod.azure.azurelib.platform.Services.PLATFORM.getTickingLightBlock()))
+                    if (state.isAir() || state.getBlock().equals(Services.PLATFORM.getTickingLightBlock()))
                         return offsetPos;
                 }
         return null;
     }
 
     public static BulletEntity createBullet(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
         return new BulletEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
     public static NeedleEntity createNeedle(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
         return new NeedleEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
@@ -106,12 +107,12 @@ public class CommonHelper {
     }
 
     public static PlasmaEntity createPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
         return new PlasmaEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
     public static PlasmaGEntity createGPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
         return new PlasmaGEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 

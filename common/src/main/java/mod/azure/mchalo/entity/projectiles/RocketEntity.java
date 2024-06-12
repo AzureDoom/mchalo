@@ -1,12 +1,9 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.network.packet.EntityPacket;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
@@ -31,7 +28,7 @@ public class RocketEntity extends AbstractArrow {
     }
 
     public RocketEntity(Level world, LivingEntity owner) {
-        super(Services.ENTITIES_HELPER.getRocketEntity(), owner, world);
+        super(Services.ENTITIES_HELPER.getRocketEntity(), world);
     }
 
     protected RocketEntity(EntityType<? extends RocketEntity> type, double x, double y, double z, Level world) {
@@ -42,11 +39,6 @@ public class RocketEntity extends AbstractArrow {
         this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
         this.setOwner(owner);
         if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
-    }
-
-    @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return EntityPacket.createPacket(this);
     }
 
     @Override
@@ -83,7 +75,7 @@ public class RocketEntity extends AbstractArrow {
         var idleOpt = 100;
         if (getDeltaMovement().lengthSqr() < 0.01) idleTicks++;
         else idleTicks = 0;
-        if (idleOpt <= 0 || idleTicks < idleOpt) super.tick();
+        if (idleTicks < idleOpt) super.tick();
         if (this.tickCount >= 100) {
             this.remove(Entity.RemovalReason.DISCARDED);
             this.doDamage();
@@ -154,5 +146,10 @@ public class RocketEntity extends AbstractArrow {
     @Override
     public boolean displayFireAnimation() {
         return false;
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
+        return Items.AIR.getDefaultInstance();
     }
 }

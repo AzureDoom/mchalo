@@ -1,16 +1,7 @@
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
 plugins {
-    id 'java'
-    id 'idea'
-    id 'maven-publish'
-    id 'fabric-loom'
-    id "me.modmuss50.mod-publish-plugin" version "0.4.0"
-}
-
-base {
-    archivesName = "${mod_id}-fabric-${minecraft_version}"
+    id 'multiloader-loader'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'me.modmuss50.mod-publish-plugin' version "${modmuss50_mod_publish_version}"
 }
 
 repositories {
@@ -31,22 +22,19 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    modImplementation "mod.azure.azurelib:azurelib-fabric-1.20.1:${azurelib_version}"
+    modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
     modApi "com.terraformersmc:modmenu:${modmenu_version}"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modApi "dev.architectury:architectury-fabric:${project.arch_version}"
     modApi "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"
-    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.1")))
-    modImplementation "maven.modrinth:better-combat:1mMMpsqV"
-    modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim_version}")
-    compileOnly project(":common")
+    modImplementation "maven.modrinth:common-network:1.0.10-1.20.6"
 }
 
 loom {
-    if (project(":common").file("src/main/resources/${mod_id}.aw").exists()) {
-        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.aw"))
+    def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
     }
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
@@ -56,34 +44,15 @@ loom {
             client()
             setConfigName("Fabric Client")
             ideConfigGenerated(true)
-            runDir("run")
+            runDir("runs/client")
         }
         server {
             server()
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
-            runDir("run")
+            runDir("runs/server")
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
-
-processResources {
-    from project(":common").sourceSets.main.resources
-}
-
-// TODO: Everything below here might be fine to move to the top-level build.gradle file.
-// They were originally in the previous fabric build.gradle. - bvanseg
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
-}
-
-jar {
-    from "LICENSE"
 }
 
 if (file('key.properties').exists()) {
@@ -92,10 +61,9 @@ if (file('key.properties').exists()) {
         File secretPropsFile = file("key.properties")
         releaseProp.load(secretPropsFile.newInputStream())
         file = remapJar.archiveFile
-        changelog = rootProject.file("changelog.txt").text
+        changelog = rootProject.file("changelog.md").text
         type = STABLE
         modLoaders.add("fabric")
-        modLoaders.add("quilt")
 
         curseforge {
             projectId = project.curseforgeID
@@ -108,6 +76,9 @@ if (file('key.properties').exists()) {
             requires {
                 slug = "azurelib"
             }
+            requires {
+                slug = "common-network"
+            }
         }
         modrinth {
             projectId = project.modrinthID
@@ -118,6 +89,9 @@ if (file('key.properties').exists()) {
             }
             requires {
                 slug = "azurelib"
+            }
+            requires {
+                slug = "common-network"
             }
         }
     }

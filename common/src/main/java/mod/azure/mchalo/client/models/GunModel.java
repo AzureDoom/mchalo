@@ -1,7 +1,7 @@
 package mod.azure.mchalo.client.models;
 
-import mod.azure.azurelib.animatable.GeoItem;
-import mod.azure.azurelib.model.DefaultedItemGeoModel;
+import mod.azure.azurelib.common.api.client.model.DefaultedItemGeoModel;
+import mod.azure.azurelib.common.api.common.animatable.GeoItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 

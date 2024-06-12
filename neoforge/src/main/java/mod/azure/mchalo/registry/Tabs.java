@@ -5,13 +5,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class Tabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CommonMod.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> ITEM_GROUP = TABS.register("items", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + CommonMod.MOD_ID + ".items")).icon(() -> new ItemStack(Items.ENERGYSWORD.get())).displayItems((enabledFeatures, entries) -> {
+    public static final Supplier<CreativeModeTab> ITEM_GROUP = TABS.register("items", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + CommonMod.MOD_ID + ".items")).icon(() -> new ItemStack(Items.ENERGYSWORD.get())).displayItems((enabledFeatures, entries) -> {
         entries.accept(Items.ENERGYSWORD.get());
         entries.accept(Items.MAGNUM.get());
         entries.accept(Items.BATTLERIFLE.get());

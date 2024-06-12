@@ -1,13 +1,13 @@
 package mod.azure.mchalo.item;
 
-import mod.azure.azurelib.animatable.GeoItem;
-import mod.azure.azurelib.animatable.SingletonGeoAnimatable;
-import mod.azure.azurelib.animatable.client.RenderProvider;
+import mod.azure.azurelib.common.api.common.animatable.GeoItem;
+import mod.azure.azurelib.common.internal.client.RenderProvider;
+import mod.azure.azurelib.common.internal.common.animatable.SingletonGeoAnimatable;
+import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.client.render.GunRender;
 import net.minecraft.ChatFormatting;
@@ -26,12 +26,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class PropShieldItem extends Item implements GeoItem {
 
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public PropShieldItem() {
         super(new Item.Properties().stacksTo(1).durability(CommonMod.config.propshield_max_damage + 1));
@@ -61,7 +59,7 @@ public class PropShieldItem extends Item implements GeoItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, @NotNull TooltipFlag context) {
+    public void appendHoverText(ItemStack stack, @NotNull TooltipContext tooltipContext, List<Component> tooltip, @NotNull TooltipFlag context) {
         tooltip.add(Component.translatable("Item Health: " + (stack.getMaxDamage() - stack.getDamageValue() - 1) + " / " + (stack.getMaxDamage() - 1)).withStyle(ChatFormatting.ITALIC));
     }
 
@@ -76,21 +74,13 @@ public class PropShieldItem extends Item implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
+    public void createRenderer(Consumer<RenderProvider> consumer) {
         consumer.accept(new RenderProvider() {
-            private final GunRender renderer = null;
-
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) return new GunRender("prop_shield_h2");
-                return renderer;
+                return new GunRender<PropShieldItem>("prop_shield_h2");
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
 }

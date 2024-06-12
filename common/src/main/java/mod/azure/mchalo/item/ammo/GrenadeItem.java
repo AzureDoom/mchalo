@@ -1,12 +1,12 @@
 package mod.azure.mchalo.item.ammo;
 
-import mod.azure.azurelib.animatable.GeoItem;
-import mod.azure.azurelib.animatable.client.RenderProvider;
+import mod.azure.azurelib.common.api.common.animatable.GeoItem;
+import mod.azure.azurelib.common.internal.client.RenderProvider;
+import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.mchalo.client.render.GunRender;
 import mod.azure.mchalo.entity.projectiles.GrenadeEntity;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -19,12 +19,10 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class GrenadeItem extends Item implements GeoItem {
 
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public GrenadeItem() {
         super(new Item.Properties());
@@ -46,7 +44,7 @@ public class GrenadeItem extends Item implements GeoItem {
         if (!user.getCooldowns().isOnCooldown(this)) {
             user.getCooldowns().addCooldown(this, 25);
             if (!world.isClientSide) {
-                var nadeEntity = new GrenadeEntity(world, user);
+                var nadeEntity = new GrenadeEntity(world);
                 nadeEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 0.75F, 1.0F);
                 nadeEntity.setBaseDamage(0);
                 world.addFreshEntity(nadeEntity);
@@ -59,22 +57,13 @@ public class GrenadeItem extends Item implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
+    public void createRenderer(Consumer<RenderProvider> consumer) {
         consumer.accept(new RenderProvider() {
-            private final GunRender renderer = null;
-
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null)
-                    return new GunRender("grenade");
-                return renderer;
+                return new GunRender<GrenadeItem>("grenade");
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
 }

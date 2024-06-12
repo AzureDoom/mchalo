@@ -1,5 +1,6 @@
 package mod.azure.mchalo.blocks;
 
+import com.mojang.serialization.MapCodec;
 import mod.azure.mchalo.blocks.blockentity.GunBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings("deprecation")
 public class GunTableBlock extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -40,10 +40,16 @@ public class GunTableBlock extends Block implements EntityBlock {
     private static final VoxelShape Y_LENGTH2 = Block.box(3, 7, 3, 13, 9, 13);
     private static final VoxelShape X_AXIS_AABB = Shapes.or(X_LENGTH1, X_LENGTH2);
     private static final VoxelShape Z_AXIS_AABB = Shapes.or(Y_LENGTH1, Y_LENGTH2);
+    public static final MapCodec<Block> CODEC = simpleCodec(GunTableBlock::new);
 
-    public GunTableBlock() {
-        super(BlockBehaviour.Properties.of().strength(4.0f).noOcclusion());
+    public GunTableBlock(BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends Block> codec() {
+        return CODEC;
     }
 
     @Override
@@ -57,9 +63,9 @@ public class GunTableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (!world.isClientSide) {
-            var screenHandlerFactory = state.getMenuProvider(world, pos);
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+        if (!level.isClientSide) {
+            var screenHandlerFactory = state.getMenuProvider(level, pos);
             if (screenHandlerFactory != null) player.openMenu(screenHandlerFactory);
         }
         return InteractionResult.SUCCESS;

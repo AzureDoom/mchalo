@@ -1,7 +1,7 @@
 package mod.azure.mchalo.client.models;
 
-import mod.azure.azurelib.animatable.GeoEntity;
-import mod.azure.azurelib.model.DefaultedEntityGeoModel;
+import mod.azure.azurelib.common.api.client.model.DefaultedEntityGeoModel;
+import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.helper.EntityEnum;
 import net.minecraft.client.renderer.RenderType;

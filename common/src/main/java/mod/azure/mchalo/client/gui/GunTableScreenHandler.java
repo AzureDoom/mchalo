@@ -13,10 +13,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,7 +66,7 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
             var optional = Objects.requireNonNull(world.getServer()).getRecipeManager().getRecipeFor(Type.INSTANCE, craftingInventory, world);
             if (optional.isPresent()) {
                 var craftingRecipe = optional.get();
-                itemStack = craftingRecipe.assemble(craftingInventory, level.registryAccess());
+                itemStack = craftingRecipe.value().assemble(craftingInventory, level.registryAccess());
             }
 
             craftingInventory.setItem(5, itemStack);
@@ -115,10 +117,11 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
         return itemStack;
     }
 
-    public List<GunTableRecipe> getRecipes() {
-        var list = new ArrayList<>(playerInventory.player.level().getRecipeManager().getAllRecipesFor(Type.INSTANCE));
-        list.sort(null);
-        return list;
+    public List<RecipeHolder<GunTableRecipe>> getRecipes() {
+        List<RecipeHolder<GunTableRecipe>> immutableRecipeListView = playerInventory.player.level().getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+        List<RecipeHolder<GunTableRecipe>> sortableList = new ArrayList<>(immutableRecipeListView);
+        sortableList.sort(Comparator.comparing(RecipeHolder::id));
+        return sortableList;
     }
 
     public void setRecipeIndex(int index) {
@@ -126,17 +129,20 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
     }
 
     public void switchTo(int recipeIndex) {
-        if (this.getRecipes().size() > recipeIndex) {
-            var gunTableRecipe = getRecipes().get(recipeIndex);
+        // index out of bounds
+        List<RecipeHolder<GunTableRecipe>> recipes = getRecipes();
+        if (recipes.size() > recipeIndex) {
+            var gunTableRecipe = recipes.get(recipeIndex).value();
             for (int i = 0; i < 5; i++) {
                 var slotStack = gunTableInventory.getItem(i);
                 if (!slotStack.isEmpty()) {
-                    if (!this.moveItemStackTo(slotStack, 6, 39, false)) return;
+                    if (!this.moveItemStackTo(slotStack, 6, 39, false))
+                        return;
                     gunTableInventory.setItem(i, slotStack);
                 }
             }
 
-            for (int i = 0; i < 5; i++) {
+            for (var i = 0; i < gunTableRecipe.ingredients().size(); i++) {
                 var ingredient = gunTableRecipe.getIngredientForSlot(i);
                 if (!ingredient.isEmpty()) {
                     var possibleItems = ((IngredientAccess) (Object) ingredient).getMatchingStacksMod();
@@ -170,7 +176,7 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
     }
 
     private boolean equals(ItemStack itemStack, ItemStack otherItemStack) {
-        return itemStack.getItem() == otherItemStack.getItem() && ItemStack.isSameItemSameTags(itemStack, otherItemStack);
+        return itemStack.getItem() == otherItemStack.getItem() && ItemStack.isSameItemSameComponents(itemStack, otherItemStack);
     }
 
     @Override

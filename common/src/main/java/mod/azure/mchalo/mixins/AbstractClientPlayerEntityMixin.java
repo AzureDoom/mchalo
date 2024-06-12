@@ -1,7 +1,7 @@
 package mod.azure.mchalo.mixins;
 
 import com.mojang.authlib.GameProfile;
-import mod.azure.azurelib.Keybindings;
+import mod.azure.azurelib.common.api.client.helper.ClientUtils;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -25,9 +25,9 @@ public abstract class AbstractClientPlayerEntityMixin extends Player {
         var itemStack = this.getMainHandItem();
         if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             if (itemStack.is(Services.ITEMS_HELPER.getSniper()))
-                ci.setReturnValue(Keybindings.SCOPE.isDown() ? 0.1F : 1.0F);
+                ci.setReturnValue(ClientUtils.SCOPE.isDown() ? 0.1F : 1.0F);
             if (itemStack.is(Services.ITEMS_HELPER.getBattleRifle()))
-                ci.setReturnValue(Keybindings.SCOPE.isDown() ? 0.5F : 1.0F);
+                ci.setReturnValue(ClientUtils.SCOPE.isDown() ? 0.5F : 1.0F);
         }
     }
 }

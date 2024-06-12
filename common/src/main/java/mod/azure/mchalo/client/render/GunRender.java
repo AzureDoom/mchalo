@@ -1,7 +1,7 @@
 package mod.azure.mchalo.client.render;
 
-import mod.azure.azurelib.animatable.GeoItem;
-import mod.azure.azurelib.renderer.GeoItemRenderer;
+import mod.azure.azurelib.common.api.client.renderer.GeoItemRenderer;
+import mod.azure.azurelib.common.api.common.animatable.GeoItem;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.client.models.GunModel;
 import net.minecraft.world.item.Item;

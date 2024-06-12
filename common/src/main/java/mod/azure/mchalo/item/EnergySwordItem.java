@@ -1,17 +1,19 @@
 package mod.azure.mchalo.item;
 
-import mod.azure.azurelib.Keybindings;
-import mod.azure.azurelib.animatable.GeoItem;
-import mod.azure.azurelib.animatable.SingletonGeoAnimatable;
-import mod.azure.azurelib.animatable.client.RenderProvider;
+import commonnetwork.api.Network;
+import mod.azure.azurelib.common.api.client.helper.ClientUtils;
+import mod.azure.azurelib.common.api.common.animatable.GeoItem;
+import mod.azure.azurelib.common.internal.client.RenderProvider;
+import mod.azure.azurelib.common.internal.common.animatable.SingletonGeoAnimatable;
+import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.mchalo.client.render.GunRender;
 import mod.azure.mchalo.helper.CommonHelper;
+import mod.azure.mchalo.network.ReloadSwordPacket;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;
@@ -25,16 +27,14 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class EnergySwordItem extends SwordItem implements GeoItem {
 
     protected static String controller = "controller";
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this, true);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public EnergySwordItem() {
-        super(Tiers.DIAMOND, 1, -2.0f, new Item.Properties().stacksTo(1).durability(20));
+        super(Tiers.DIAMOND, new Item.Properties().stacksTo(1).durability(20));
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
@@ -61,17 +61,17 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
                     triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) world), controller, "open");
                 } else triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) world), controller, "close");
             }
-            if (world.isClientSide && player.getMainHandItem().getItem() instanceof EnergySwordItem)
-                if (Keybindings.RELOAD.isDown() && selected) {
-                }
+            if (world.isClientSide && player.getMainHandItem().getItem() instanceof EnergySwordItem && ClientUtils.RELOAD.isDown() && selected) {
+                Network.getNetworkHandler().sendToServer(new ReloadSwordPacket());
+            }
         }
     }
 
-    public void reload(Player user, InteractionHand hand) {
+    public static void reload(Player user, InteractionHand hand) {
         if (user.getItemInHand(hand).getItem() instanceof EnergySwordItem) {
             while (user.getItemInHand(hand).getDamageValue() != 0 && user.getInventory().countItem(Services.ITEMS_HELPER.getBatteriesAmmo()) > 0) {
                 CommonHelper.removeAmmo(Services.ITEMS_HELPER.getBatteriesAmmo(), user);
-                user.getItemInHand(hand).hurtAndBreak(-20, user, s -> user.broadcastBreakEvent(hand));
+                user.getItemInHand(hand).hurtAndBreak(-20, user, LivingEntity.getEquipmentSlotForItem(user.getMainHandItem()));
                 user.getItemInHand(hand).setPopTime(3);
             }
         }
@@ -98,7 +98,7 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
             playerentity.getCooldowns().addCooldown(this, 20);
             var aabb = new AABB(playerentity.blockPosition().above()).inflate(2D, 2D, 2D);
             playerentity.level().getEntities(playerentity, aabb).forEach(e -> doDamage(playerentity, e));
-            stack.hurtAndBreak(1, playerentity, p -> p.broadcastBreakEvent(playerentity.getUsedItemHand()));
+            stack.hurtAndBreak(1, playerentity, LivingEntity.getEquipmentSlotForItem(stack));
         }
         return super.hurtEnemy(stack, target, miner);
     }
@@ -111,26 +111,14 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
     }
 
     @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        return Rarity.EPIC;
-    }
-
-    @Override
-    public void createRenderer(Consumer<Object> consumer) {
+    public void createRenderer(Consumer<RenderProvider> consumer) {
         consumer.accept(new RenderProvider() {
-            private final GunRender renderer = null;
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) return new GunRender("energy_sword");
-                return renderer;
+                return new GunRender<EnergySwordItem>("energy_sword");
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
 }

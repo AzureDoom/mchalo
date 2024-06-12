@@ -1,18 +1,16 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.animatable.GeoEntity;
+import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
+import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.azurelib.network.packet.EntityPacket;
-import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -37,36 +35,37 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
 
     public GrenadeEntity(EntityType<? extends GrenadeEntity> entityType, Level world) {
-        super(entityType, world);
+        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
-    public GrenadeEntity(Level world, LivingEntity owner) {
-        super(Services.ENTITIES_HELPER.getGrenadeEntity(), owner, world);
+    public GrenadeEntity(Level world) {
+        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
     }
 
     protected GrenadeEntity(EntityType<? extends GrenadeEntity> type, double x, double y, double z, Level world) {
         this(type, world);
     }
 
-    protected GrenadeEntity(EntityType<? extends GrenadeEntity> type, LivingEntity owner, Level world) {
-        this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
-        this.setOwner(owner);
-        this.pickup = AbstractArrow.Pickup.DISALLOWED;
-    }
-
     public GrenadeEntity(Level world, LivingEntity user, boolean spinning) {
-        super(Services.ENTITIES_HELPER.getGrenadeEntity(), user, world);
+        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
         this.entityData.set(SPINNING, spinning);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SPINNING, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SPINNING, false);
     }
 
-    public boolean isSpinning() {
-        return (Boolean) this.entityData.get(SPINNING);
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putShort("life", (short)this.tickCount);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        this.tickCount = tag.getShort("life");
     }
 
     public void setSpinning(boolean spin) {
@@ -84,11 +83,6 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }
-
-    @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return EntityPacket.createPacket(this);
     }
 
     @Override
@@ -130,7 +124,7 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
             this.entityData.set(SPINNING, false);
             this.remove(Entity.RemovalReason.DISCARDED);
         }
-        this.setSoundEvent(SoundEvents.GENERIC_EXPLODE);
+        this.setSoundEvent(SoundEvents.GENERIC_EXPLODE.value());
     }
 
     @Override
@@ -163,6 +157,11 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     @Override
     public boolean displayFireAnimation() {
         return false;
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
+        return Items.AIR.getDefaultInstance();
     }
 
 }

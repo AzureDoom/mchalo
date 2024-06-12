@@ -1,11 +1,8 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.network.packet.EntityPacket;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -34,7 +31,7 @@ public class BulletEntity extends AbstractArrow {
     }
 
     public BulletEntity(Level world, LivingEntity owner, Float damage) {
-        super(Services.ENTITIES_HELPER.getBulletEntity(), owner, world);
+        super(Services.ENTITIES_HELPER.getBulletEntity(), world);
         bulletdamage = damage;
     }
 
@@ -46,11 +43,6 @@ public class BulletEntity extends AbstractArrow {
         this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
         this.setOwner(owner);
         if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
-    }
-
-    @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return EntityPacket.createPacket(this);
     }
 
     @Override
@@ -95,14 +87,14 @@ public class BulletEntity extends AbstractArrow {
 
     @Override
     protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
-        return SoundEvents.ARMOR_EQUIP_IRON;
+        return SoundEvents.ARMOR_EQUIP_IRON.value();
     }
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
         if (!this.level().isClientSide) this.remove(Entity.RemovalReason.DISCARDED);
-        this.setSoundEvent(SoundEvents.ARMOR_EQUIP_IRON);
+        this.setSoundEvent(SoundEvents.ARMOR_EQUIP_IRON.value());
     }
 
     @Override
@@ -124,7 +116,7 @@ public class BulletEntity extends AbstractArrow {
                     EnchantmentHelper.doPostDamageEffects((LivingEntity) entity2, livingEntity);
                 }
                 this.doPostHurtEffects(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
+                if (livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
                     ((ServerPlayer) entity2).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
         } else {
@@ -133,13 +125,18 @@ public class BulletEntity extends AbstractArrow {
     }
 
     @Override
-    public ItemStack getPickupItem() {
+    public @NotNull ItemStack getPickupItem() {
         return new ItemStack(Items.AIR);
     }
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
+        return Items.AIR.getDefaultInstance();
     }
 
 }

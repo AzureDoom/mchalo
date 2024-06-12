@@ -19,15 +19,15 @@ public class HaloDisplay implements Display {
 	public final GunTableRecipe recipe2;
 
 	public HaloDisplay(GunTableRecipe recipe) {
-		input = Arrays.stream(recipe.ingredients).map(Pair::getLeft).map(EntryIngredients::ofIngredient).toList();
-		count = Arrays.stream(recipe.ingredients).map(Pair::getRight).toList();
-		this.output = EntryIngredients.of(recipe.output);
+		input = recipe.ingredients().stream().map(com.mojang.datafixers.util.Pair::getFirst).map(EntryIngredients::ofIngredient).toList();
+		count = recipe.ingredients().stream().map(com.mojang.datafixers.util.Pair::getSecond).toList();
+		this.output = EntryIngredients.of(recipe.output());
 		this.recipe2 = recipe;
 	}
 
 	@Override
 	public List<EntryIngredient> getInputEntries() {
-		return Arrays.stream(recipe2.ingredients).map(Pair::getLeft).map(EntryIngredients::ofIngredient).toList();
+		return recipe2.ingredients().stream().map(com.mojang.datafixers.util.Pair::getFirst).map(EntryIngredients::ofIngredient).toList();
 	}
 
 	@Override

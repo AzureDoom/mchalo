@@ -1,7 +1,7 @@
 package mod.azure.mchalo.config;
 
-import mod.azure.azurelib.config.Config;
-import mod.azure.azurelib.config.Configurable;
+import mod.azure.azurelib.common.api.common.config.Config;
+import mod.azure.azurelib.common.internal.common.config.Configurable;
 import mod.azure.mchalo.CommonMod;
 
 @Config(id = CommonMod.MOD_ID)
