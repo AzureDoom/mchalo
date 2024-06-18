@@ -1,6 +1,7 @@
 package mod.azure.mchalo.platform;
 
 import mod.azure.mchalo.blocks.blockentity.GunBlockEntity;
+import mod.azure.mchalo.entity.projectiles.*;
 import mod.azure.mchalo.platform.services.MCHaloEntitiesHelper;
 import mod.azure.mchalo.registry.Entities;
 import net.minecraft.world.entity.EntityType;
@@ -14,32 +15,32 @@ public class FabricMCHaloEntitiesHelper implements MCHaloEntitiesHelper {
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getBulletEntity() {
+    public EntityType<? extends BulletEntity> getBulletEntity() {
         return Entities.BULLET;
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getGrenadeEntity() {
+    public EntityType<? extends GrenadeEntity> getGrenadeEntity() {
         return Entities.GRENADE;
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getNeedleEntity() {
+    public EntityType<? extends NeedleEntity> getNeedleEntity() {
         return Entities.NEEDLE;
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getPlasmaEntity() {
+    public EntityType<? extends PlasmaEntity> getPlasmaEntity() {
         return Entities.PLASMA;
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getPlasmaGEntity() {
+    public EntityType<? extends PlasmaGEntity> getPlasmaGEntity() {
         return Entities.PLASMAG;
     }
 
     @Override
-    public EntityType<? extends AbstractArrow> getRocketEntity() {
+    public EntityType<? extends RocketEntity> getRocketEntity() {
         return Entities.ROCKET;
     }
 }

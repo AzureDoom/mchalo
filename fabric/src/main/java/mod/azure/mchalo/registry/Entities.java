@@ -21,7 +21,7 @@ public record Entities() {
     public static EntityType<RocketEntity> ROCKET;
 
     public static <T extends Entity> EntityType<T> projectile(EntityType.EntityFactory<T> factory, String id) {
-        var type = EntityType.Builder.of(factory, MobCategory.MISC).sized(0.5F, 0.5F).noSummon().canSpawnFarFromPlayer().clientTrackingRange(90).build();
+        var type = EntityType.Builder.of(factory, MobCategory.MISC).sized(0.5F, 0.5F).canSpawnFarFromPlayer().clientTrackingRange(90).updateInterval(1).build();
         Registry.register(BuiltInRegistries.ENTITY_TYPE, CommonMod.modResource(id), type);
         return type;
     }

@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public final class FabricLibMod implements ModInitializer {
@@ -29,6 +30,7 @@ public final class FabricLibMod implements ModInitializer {
     public static final GunTableBlock GUN_TABLE = new GunTableBlock(BlockBehaviour.Properties.of().strength(4.0f).noOcclusion());
     public static MenuType<GunTableScreenHandler> SCREEN_HANDLER_TYPE;
     public static RecipeSerializer<GunTableRecipe> GUN_TABLE_RECIPE_SERIALIZER = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, CommonMod.modResource("gun_table"), GunTableRecipe.Serializer.INSTANCE);
+    public static final RecipeType<GunTableRecipe> GUN_TABLE_RECIPE_TYPE = Registry.register(BuiltInRegistries.RECIPE_TYPE, CommonMod.modResource(GunTableRecipe.Type.ID), GunTableRecipe.Type.INSTANCE);
     public static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, CommonMod.modResource("items"));
 
     @Override

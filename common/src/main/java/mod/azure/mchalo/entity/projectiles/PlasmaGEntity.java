@@ -1,7 +1,11 @@
 package mod.azure.mchalo.entity.projectiles;
 
+import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -22,7 +26,6 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class PlasmaGEntity extends AbstractArrow {
-
     protected static float bulletdamage;
     private int idleTicks = 0;
 
@@ -31,19 +34,9 @@ public class PlasmaGEntity extends AbstractArrow {
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
-    public PlasmaGEntity(Level world, LivingEntity owner, Float damage) {
-        super(Services.ENTITIES_HELPER.getPlasmaGEntity(), world);
+    public PlasmaGEntity(Level world, Float damage) {
+        this(Services.ENTITIES_HELPER.getPlasmaGEntity(), world);
         bulletdamage = damage;
-    }
-
-    protected PlasmaGEntity(EntityType<? extends PlasmaGEntity> type, double x, double y, double z, Level world) {
-        this(type, world);
-    }
-
-    protected PlasmaGEntity(EntityType<? extends PlasmaGEntity> type, LivingEntity owner, Level world) {
-        this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
-        this.setOwner(owner);
-        if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
     @Override
@@ -56,20 +49,25 @@ public class PlasmaGEntity extends AbstractArrow {
     }
 
     @Override
-    public void tickDespawn() {
-        if (this.tickCount >= 40) this.remove(Entity.RemovalReason.DISCARDED);
-    }
-
-    @Override
     public void tick() {
         var idleOpt = 100;
         if (getDeltaMovement().lengthSqr() < 0.01) idleTicks++;
         else idleTicks = 0;
-        if (idleOpt <= 0 || idleTicks < idleOpt) super.tick();
+        if (idleTicks < idleOpt) super.tick();
         if (this.tickCount >= 80) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         if (this.level().isClientSide)
             this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaGParticle(), true, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putShort("life", (short)this.tickCount);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        this.tickCount = tag.getShort("life");
     }
 
     @Override

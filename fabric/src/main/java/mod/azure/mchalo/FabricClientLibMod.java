@@ -24,11 +24,11 @@ public class FabricClientLibMod implements ClientModInitializer {
         new PacketHandler().registerMessages();
         MenuScreens.register(FabricLibMod.SCREEN_HANDLER_TYPE, GunTableScreen::new);
         EntityRendererRegistry.register(Entities.BULLET, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.NEEDLE, (ctx) -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
+        EntityRendererRegistry.register(Entities.NEEDLE, ctx -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
         EntityRendererRegistry.register(Entities.ROCKET, EmptyRender::new);
         EntityRendererRegistry.register(Entities.PLASMA, EmptyRender::new);
         EntityRendererRegistry.register(Entities.PLASMAG, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.GRENADE, (ctx) -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
+        EntityRendererRegistry.register(Entities.GRENADE, ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
         ItemProperties.register(Items.SNIPER, new ResourceLocation("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
             if (livingEntity != null) return ClientUtils.SCOPE.isDown() ? 1.0F : 0.0F;
             return 0.0F;

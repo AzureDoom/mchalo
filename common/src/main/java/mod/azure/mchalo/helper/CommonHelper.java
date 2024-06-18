@@ -94,29 +94,29 @@ public class CommonHelper {
 
     public static BulletEntity createBullet(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
         var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new BulletEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+        return new BulletEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
     public static NeedleEntity createNeedle(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
         var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new NeedleEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+        return new NeedleEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
-    public static RocketEntity createRocket(Level world, ItemStack stack, LivingEntity shooter) {
-        return new RocketEntity(world, shooter);
+    public static RocketEntity createRocket(Level world) {
+        return new RocketEntity(world);
     }
 
     public static PlasmaEntity createPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
         var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new PlasmaEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+        return new PlasmaEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
     public static PlasmaGEntity createGPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
         var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new PlasmaGEntity(worldIn, shooter, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+        return new PlasmaGEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
     }
 
     public static GrenadeEntity createGrenade(Level worldIn, ItemStack stack, LivingEntity shooter) {
-        return new GrenadeEntity(worldIn, shooter, false);
+        return new GrenadeEntity(worldIn, false);
     }
 }

@@ -45,8 +45,9 @@ public class GrenadeItem extends Item implements GeoItem {
             user.getCooldowns().addCooldown(this, 25);
             if (!world.isClientSide) {
                 var nadeEntity = new GrenadeEntity(world);
-                nadeEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 0.75F, 1.0F);
+                nadeEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.5F, 1.0F);
                 nadeEntity.setBaseDamage(0);
+                nadeEntity.moveTo(user.getX(), user.getY(0.6D), user.getZ(), 0, 0);
                 world.addFreshEntity(nadeEntity);
             }
             if (!user.isCreative())

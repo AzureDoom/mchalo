@@ -1,9 +1,13 @@
 package mod.azure.mchalo.entity.projectiles;
 
+import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
@@ -27,18 +31,18 @@ public class RocketEntity extends AbstractArrow {
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
-    public RocketEntity(Level world, LivingEntity owner) {
-        super(Services.ENTITIES_HELPER.getRocketEntity(), world);
+    public RocketEntity(Level world) {
+        this(Services.ENTITIES_HELPER.getRocketEntity(), world);
     }
 
-    protected RocketEntity(EntityType<? extends RocketEntity> type, double x, double y, double z, Level world) {
-        this(type, world);
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putShort("life", (short)this.tickCount);
     }
 
-    protected RocketEntity(EntityType<? extends RocketEntity> type, LivingEntity owner, Level world) {
-        this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
-        this.setOwner(owner);
-        if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        this.tickCount = tag.getShort("life");
     }
 
     @Override
@@ -51,14 +55,6 @@ public class RocketEntity extends AbstractArrow {
         this.level().addFreshEntity(areaeffectcloudentity);
         this.doDamage();
         super.remove(reason);
-    }
-
-    @Override
-    protected void tickDespawn() {
-        if (this.tickCount >= 40) {
-            this.remove(Entity.RemovalReason.DISCARDED);
-            this.doDamage();
-        }
     }
 
     @Override

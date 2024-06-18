@@ -1,6 +1,7 @@
 package mod.azure.mchalo.entity.projectiles;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
+import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
@@ -11,6 +12,8 @@ import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -40,16 +43,17 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     }
 
     public GrenadeEntity(Level world) {
-        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
+        this(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
     }
 
-    protected GrenadeEntity(EntityType<? extends GrenadeEntity> type, double x, double y, double z, Level world) {
-        this(type, world);
-    }
-
-    public GrenadeEntity(Level world, LivingEntity user, boolean spinning) {
-        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
+    public GrenadeEntity(Level world, boolean spinning) {
+        this(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
         this.entityData.set(SPINNING, spinning);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return super.getAddEntityPacket();
     }
 
     @Override

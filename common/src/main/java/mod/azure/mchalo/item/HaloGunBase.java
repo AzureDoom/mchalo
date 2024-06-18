@@ -114,20 +114,22 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                     var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
                     bulletEntity.shootFromRotation(player, player.getXRot() + (y == 3 ? 3 : y == 4 ? -3 : 0), player.getYRot() + (y == 3 ? 3 : y == 2 ? -3 : y == 4 ? -3 : 0), 0.5F, 3.0F, 1.0F);
                     bulletEntity.tickCount = 37;
+                    bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                     level.addFreshEntity(bulletEntity);
                 }
             }
             case ROCKET -> {
                 player.getCooldowns().addCooldown(this, 25);
-                var rocketEntity = CommonHelper.createRocket(level, itemStack, player);
+                var rocketEntity = CommonHelper.createRocket(level);
                 rocketEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.25F, 1.0F);
-                rocketEntity.moveTo(player.getX(), player.getY(0.5), player.getZ(), 0, 0);
+                rocketEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(rocketEntity);
             }
             case SNIPER -> {
                 player.getCooldowns().addCooldown(this, 35);
                 var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
                 bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
+                bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(bulletEntity);
             }
         }
@@ -140,6 +142,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                 for (int y = 0; y < 3; ++y) {
                     var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
                     bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot() + (y == 1 ? 0.0F : y == 2 ? -0.5F : 0.5F), 0.5F, 3.0F, 1.0F);
+                    bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                     level.addFreshEntity(bulletEntity);
                 }
             }
@@ -147,13 +150,14 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                 player.getCooldowns().addCooldown(this, 8);
                 var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
                 bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
+                bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(bulletEntity);
             }
             case GRENADE -> {
                 player.getCooldowns().addCooldown(this, 12);
                 var nadeEntity = CommonHelper.createGrenade(level, itemStack, player);
                 nadeEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F * 3.0F, 1.0F);
-                nadeEntity.moveTo(player.getX(), player.getY(0.95), player.getZ(), 0, 0);
+                nadeEntity.moveTo(player.getX(), player.getY(0.95D), player.getZ(), 0, 0);
                 level.addFreshEntity(nadeEntity);
             }
             case NEEDLE -> {
@@ -161,12 +165,14 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                 var needleEntity = CommonHelper.createNeedle(level, itemStack, player, getAttackDamage());
                 needleEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
                 needleEntity.tickCount = 23;
+                needleEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(needleEntity);
             }
             case PLASMA -> {
                 player.getCooldowns().addCooldown(this, 8);
                 var plamsaEntity = CommonHelper.createPlamsa(level, itemStack, player, getAttackDamage());
                 plamsaEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+                plamsaEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(plamsaEntity);
             }
             case PLASMAG -> {
@@ -174,6 +180,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                 var plasmaGEntity = CommonHelper.createGPlamsa(level, itemStack, player, getAttackDamage());
                 plasmaGEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F * 3.0F, 1.0F);
                 plasmaGEntity.tickCount = 33;
+                plasmaGEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(plasmaGEntity);
             }
             case SHELL -> {
@@ -181,6 +188,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
                 for (int y = 0; y < 5; ++y) {
                     var shellEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
                     shellEntity.shootFromRotation(player, player.getXRot() + (y == 3 ? 1 : y == 4 ? -1 : 0), player.getYRot() + (y == 3 ? 1 : y == 2 ? -1 : y == 4 ? -1 : 0), 0.5F, 3.0F, 1.0F);
+                    shellEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                     level.addFreshEntity(shellEntity);
                 }
             }

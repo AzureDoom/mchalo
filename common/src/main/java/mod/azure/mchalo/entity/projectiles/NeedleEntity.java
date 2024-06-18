@@ -40,8 +40,8 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
-    public NeedleEntity(Level world, LivingEntity owner, Float damage) {
-        super(Services.ENTITIES_HELPER.getNeedleEntity(), world);
+    public NeedleEntity(Level world, Float damage) {
+        this(Services.ENTITIES_HELPER.getNeedleEntity(), world);
         bulletdamage = damage;
     }
 
@@ -73,11 +73,6 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
             living.invulnerableTime = 0;
             living.setDeltaMovement(0, 0, 0);
         }
-    }
-
-    @Override
-    public void tickDespawn() {
-        if (this.tickCount >= 40) this.remove(Entity.RemovalReason.DISCARDED);
     }
 
     @Override

@@ -1,8 +1,13 @@
 package mod.azure.mchalo.entity.projectiles;
 
+import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -30,19 +35,9 @@ public class BulletEntity extends AbstractArrow {
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
-    public BulletEntity(Level world, LivingEntity owner, Float damage) {
-        super(Services.ENTITIES_HELPER.getBulletEntity(), world);
+    public BulletEntity(Level world, Float damage) {
+        this(Services.ENTITIES_HELPER.getBulletEntity(), world);
         bulletdamage = damage;
-    }
-
-    protected BulletEntity(EntityType<? extends BulletEntity> type, double x, double y, double z, Level world) {
-        this(type, world);
-    }
-
-    protected BulletEntity(EntityType<? extends BulletEntity> type, LivingEntity owner, Level world) {
-        this(type, owner.getX(), owner.getEyeY() - 0.10000000149011612D, owner.getZ(), world);
-        this.setOwner(owner);
-        if (owner instanceof Player) this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
     @Override
@@ -55,10 +50,13 @@ public class BulletEntity extends AbstractArrow {
     }
 
     @Override
-    public void tickDespawn() {
-        if (this.tickCount >= 40) {
-            this.remove(Entity.RemovalReason.DISCARDED);
-        }
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putShort("life", (short)this.tickCount);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        this.tickCount = tag.getShort("life");
     }
 
     @Override
