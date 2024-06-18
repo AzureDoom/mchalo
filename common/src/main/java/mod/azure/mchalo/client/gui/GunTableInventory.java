@@ -18,10 +18,12 @@ public class GunTableInventory implements Container, RecipeInput {
         this.container = container;
     }
 
+    @Override
     public int getContainerSize() {
         return this.stacks.size();
     }
 
+    @Override
     public boolean isEmpty() {
         for (ItemStack stack : stacks) {
             if (!stack.isEmpty())
@@ -30,7 +32,8 @@ public class GunTableInventory implements Container, RecipeInput {
         return true;
     }
 
-    public ItemStack getItem(int slot) {
+    @Override
+    public @NotNull ItemStack getItem(int slot) {
         return this.stacks.get(slot);
     }
 
@@ -39,31 +42,37 @@ public class GunTableInventory implements Container, RecipeInput {
         return 5;
     }
 
-    public ItemStack removeItem(int slot, int amount) {
+    @Override
+    public @NotNull ItemStack removeItem(int slot, int amount) {
         var itemStack = ContainerHelper.removeItem(this.stacks, slot, amount);
         if (!itemStack.isEmpty() && slot != 5)
             this.container.slotsChanged(this);
         return itemStack;
     }
 
-    public ItemStack removeItemNoUpdate(int slot) {
+    @Override
+    public @NotNull ItemStack removeItemNoUpdate(int slot) {
         return ContainerHelper.takeItem(this.stacks, slot);
     }
 
-    public void setItem(int slot, ItemStack stack) {
+    @Override
+    public void setItem(int slot, @NotNull ItemStack stack) {
         this.stacks.set(slot, stack);
         if (slot != 5)
             container.slotsChanged(this);
     }
 
+    @Override
     public boolean stillValid(Player player) {
         return true;
     }
 
+    @Override
     public void setChanged() {
 
     }
 
+    @Override
     public void clearContent() {
         this.stacks.clear();
     }
