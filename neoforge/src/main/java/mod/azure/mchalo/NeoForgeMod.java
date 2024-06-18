@@ -38,7 +38,8 @@ public final class NeoForgeMod {
     }
 
     public record Blocks() {
-        public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK, CommonMod.MOD_ID);
+        public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK,
+                CommonMod.MOD_ID);
         public static final Supplier<Block> GUN_TABLE = BLOCKS.register("gun_table", () -> new GunTableBlock(
                 BlockBehaviour.Properties.of().strength(4.0f).noOcclusion()));
 
