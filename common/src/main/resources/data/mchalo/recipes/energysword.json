@@ -1,20 +1,25 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "abc",
-	"key": {
-		"a": {
-			"item": "minecraft:amethyst_shard",
-			"count": 10
+	"ingredients": [
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:amethyst_shard"
+			}
 		},
-		"b": {
-			"item": "minecraft:repeater",
-			"count": 2
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:repeater"
+			}
 		},
-		"c": {
-			"item": "minecraft:diamond_sword",
-			"count": 1
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:diamond_sword"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:energy_sword"
 	}

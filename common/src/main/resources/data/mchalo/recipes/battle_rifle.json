@@ -1,20 +1,25 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "abc",
-	"key": {
-		"a": {
-			"item": "minecraft:iron_ingot",
-			"count": 10
+	"ingredients": [
+		{
+			"count": 2,
+			"ingredient": {
+				"item": "minecraft:gunpowder"
+			}
 		},
-		"b": {
-			"item": "minecraft:repeater",
-			"count": 1
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:repeater"
+			}
 		},
-		"c": {
-			"item": "minecraft:gunpowder",
-			"count": 2
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:iron_nugget"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:battle_rifle"
 	}

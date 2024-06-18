@@ -24,7 +24,8 @@ public class GunTableOutputSlot extends Slot {
 
     @Override
     public @NotNull ItemStack remove(int amount) {
-        if (this.hasItem()) this.amount += Math.min(amount, this.getItem().getCount());
+        if (this.hasItem())
+            this.amount += Math.min(amount, this.getItem().getCount());
 
         return super.remove(amount);
     }

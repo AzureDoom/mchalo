@@ -23,12 +23,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class GunTableScreenHandler extends AbstractContainerMenu {
-    private final Inventory playerInventory;
-    private final GunTableInventory gunTableInventory;
-    private final ContainerLevelAccess context;
-    @SuppressWarnings("unused")
-    private int recipeIndex;
-    private static Level level;
+    protected static Level level;
+    protected final Inventory playerInventory;
+    protected final GunTableInventory gunTableInventory;
+    protected final ContainerLevelAccess context;
+    protected int recipeIndex;
 
     // client
     public GunTableScreenHandler(int syncId, Inventory playerInventory) {
@@ -63,7 +62,7 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
         if (!world.isClientSide) {
             var serverPlayerEntity = (ServerPlayer) player;
             var itemStack = ItemStack.EMPTY;
-            var optional = Objects.requireNonNull(world.getServer()).getRecipeManager().getRecipeFor(Type.INSTANCE, craftingInventory, world);
+            var optional = world.getServer().getRecipeManager().getRecipeFor(Type.INSTANCE, craftingInventory, world);
             if (optional.isPresent()) {
                 var craftingRecipe = optional.get();
                 itemStack = craftingRecipe.value().assemble(craftingInventory, level.registryAccess());
@@ -93,23 +92,26 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         var itemStack = ItemStack.EMPTY;
         var slot = this.slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             var itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index == 2) {
-                if (!this.moveItemStackTo(itemStack2, 3, 39, true)) return ItemStack.EMPTY;
+                if (!this.moveItemStackTo(itemStack2, 3, 39, true))
+                    return ItemStack.EMPTY;
                 slot.onQuickCraft(itemStack2, itemStack);
             } else if (index != 0 && index != 1) {
-                if (index >= 3 && index < 30) {
-                    if (!this.moveItemStackTo(itemStack2, 30, 39, false)) return ItemStack.EMPTY;
-                } else if (index >= 30 && index < 39 && !this.moveItemStackTo(itemStack2, 3, 30, false))
+                if (index >= 3 && index < 30 && !this.moveItemStackTo(itemStack2, 30, 39, false))
                     return ItemStack.EMPTY;
-            } else if (!this.moveItemStackTo(itemStack2, 3, 39, false)) return ItemStack.EMPTY;
+            } else if (!this.moveItemStackTo(itemStack2, 3, 39, false))
+                return ItemStack.EMPTY;
 
-            if (itemStack2.isEmpty()) slot.setByPlayer(ItemStack.EMPTY);
-            else slot.setChanged();
+            if (itemStack2.isEmpty())
+                slot.set(ItemStack.EMPTY);
+            else
+                slot.setChanged();
 
-            if (itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
+            if (itemStack2.getCount() == itemStack.getCount())
+                return ItemStack.EMPTY;
 
             slot.onTake(player, itemStack2);
         }
@@ -169,7 +171,8 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
                     slotStack.shrink(countToMove);
                     slotStackCopy.setCount(l);
                     this.gunTableInventory.setItem(slot, slotStackCopy);
-                    if (l >= stack.getMaxStackSize()) break;
+                    if (l >= stack.getMaxStackSize())
+                        break;
                 }
             }
         }
@@ -195,15 +198,20 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
                 var itemStack2 = this.gunTableInventory.removeItemNoUpdate(2);
                 var itemStack3 = this.gunTableInventory.removeItemNoUpdate(3);
                 var itemStack4 = this.gunTableInventory.removeItemNoUpdate(4);
-                if (!itemStack0.isEmpty()) player.drop(itemStack0, false);
+                if (!itemStack0.isEmpty())
+                    player.drop(itemStack0, false);
 
-                if (!itemStack1.isEmpty()) player.drop(itemStack1, false);
+                if (!itemStack1.isEmpty())
+                    player.drop(itemStack1, false);
 
-                if (!itemStack2.isEmpty()) player.drop(itemStack2, false);
+                if (!itemStack2.isEmpty())
+                    player.drop(itemStack2, false);
 
-                if (!itemStack3.isEmpty()) player.drop(itemStack3, false);
+                if (!itemStack3.isEmpty())
+                    player.drop(itemStack3, false);
 
-                if (!itemStack4.isEmpty()) player.drop(itemStack4, false);
+                if (!itemStack4.isEmpty())
+                    player.drop(itemStack4, false);
             }
         }
     }

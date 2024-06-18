@@ -1,6 +1,25 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "abc",
+	"ingredients": [
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:tnt"
+			}
+		},
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:repeater"
+			}
+		},
+		{
+			"count": 20,
+			"ingredient": {
+				"item": "minecraft:iron_nugget"
+			}
+		}
+	],
 	"key": {
 		"a": {
 			"item": "minecraft:iron_ingot",

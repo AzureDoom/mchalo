@@ -21,9 +21,8 @@ import java.util.List;
 
 public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandler> {
     private static final ResourceLocation TEXTURE = CommonMod.modResource("textures/gui/gun_table_gui.png");
-
-    private int selectedIndex;
     private final GunTableScreen.WidgetButtonPage[] offers = new GunTableScreen.WidgetButtonPage[7];
+    private int selectedIndex;
     private int indexStartOffset;
     private boolean scrolling;
 
@@ -90,7 +89,7 @@ public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandle
     }
 
     @Override
-    public void render(@NotNull GuiGraphics matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);
         List<RecipeHolder<GunTableRecipe>> tradeOfferList = this.menu.getRecipes();
@@ -145,7 +144,7 @@ public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandle
     }
 
     private void renderIngredients(GuiGraphics matrices, GunTableRecipe gunTableRecipe, int x, int y) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < gunTableRecipe.ingredients().size(); i++) {
             ItemStack[] displayStacks = gunTableRecipe.getIngredientForSlot(i).getItems();
             if (displayStacks.length > 0) {
                 // probably slow, but subclassing ingredient is hard in fabric
@@ -168,7 +167,7 @@ public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandle
         int i = this.menu.getRecipes().size();
         if (this.canScroll(i)) {
             int j = i - 7;
-            this.indexStartOffset = (int) (this.indexStartOffset - scrollX);
+            this.indexStartOffset = (int) (this.indexStartOffset - scrollY);
             this.indexStartOffset = Mth.clamp(this.indexStartOffset, 0, j);
         }
         return true;
@@ -176,12 +175,12 @@ public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandle
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        var i = this.menu.getRecipes().size();
+        int i = this.menu.getRecipes().size();
         if (this.scrolling) {
-            var j = this.topPos + 18;
-            var k = j + 139;
-            var l = i - 7;
-            var f = ((float) mouseY - j - 13.5F) / ((k - j) - 27.0F);
+            int j = this.topPos + 18;
+            int k = j + 139;
+            int l = i - 7;
+            float f = ((float) mouseY - j - 13.5F) / ((k - j) - 27.0F);
             f = f * l + 0.5F;
             this.indexStartOffset = Mth.clamp((int) f, 0, l);
             return true;

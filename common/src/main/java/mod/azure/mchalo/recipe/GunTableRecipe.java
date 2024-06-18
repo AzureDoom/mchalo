@@ -32,6 +32,11 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
         return true;
     }
 
+    @Override
+    public @NotNull ItemStack assemble(GunTableInventory craftingContainer, HolderLookup.Provider registries) {
+        return this.getResultItem(registries).copy();
+    }
+
     public Ingredient getIngredientForSlot(int index) {
         return ingredients.get(index).getFirst();
     }
@@ -46,12 +51,7 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull GunTableInventory craftingContainer, HolderLookup.@NotNull Provider registries) {
-        return this.getResultItem(registries).copy();
-    }
-
-    @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider registries) {
         return output;
     }
 
@@ -66,11 +66,11 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
     }
 
     public static class Type implements RecipeType<GunTableRecipe> {
-        private Type() {
-        }
-
         public static final Type INSTANCE = new Type();
         public static final String ID = "gun_table";
+
+        private Type() {
+        }
     }
 
     @Override

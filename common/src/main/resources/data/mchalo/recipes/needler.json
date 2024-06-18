@@ -1,20 +1,31 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "abc",
-	"key": {
-		"a": {
-			"item": "minecraft:amethyst_shard",
-			"count": 10
+	"ingredients": [
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:amethyst_shard"
+			}
 		},
-		"b": {
-			"item": "minecraft:repeater",
-			"count": 1
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:repeater"
+			}
 		},
-		"c": {
-			"item": "minecraft:iron_nugget",
-			"count": 20
+		{
+			"count": 20,
+			"ingredient": {
+				"item": "minecraft:iron_nugget"
+			}
+		},
+		{
+			"count": 6,
+			"ingredient": {
+				"item": "minecraft:redstone"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:needler"
 	}

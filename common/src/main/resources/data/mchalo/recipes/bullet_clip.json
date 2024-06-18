@@ -1,16 +1,19 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "ab",
-	"key": {
-		"a": {
-			"item": "minecraft:iron_nugget",
-			"count": 2
+	"ingredients": [
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:gunpowder"
+			}
 		},
-		"b": {
-			"item": "minecraft:gunpowder",
-			"count": 1
+		{
+			"count": 2,
+			"ingredient": {
+				"item": "minecraft:iron_nugget"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:bullet_clip"
 	}

@@ -1,16 +1,19 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "ab",
-	"key": {
-		"a": {
-			"item": "minecraft:iron_ingot",
-			"count": 5
+	"ingredients": [
+		{
+			"count": 2,
+			"ingredient": {
+				"item": "minecraft:gunpowder"
+			}
 		},
-		"b": {
-			"item": "minecraft:gunpowder",
-			"count": 2
+		{
+			"count": 5,
+			"ingredient": {
+				"item": "minecraft:iron_ingot"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:magnum_h3"
 	}

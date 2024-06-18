@@ -1,20 +1,25 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "abc",
-	"key": {
-		"a": {
-			"item": "minecraft:iron_ingot",
-			"count": 10
+	"ingredients": [
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:redstone_torch"
+			}
 		},
-		"b": {
-			"item": "minecraft:redstone_torch",
-			"count": 10
+		{
+			"count": 2,
+			"ingredient": {
+				"item": "minecraft:gunpowder"
+			}
 		},
-		"c": {
-			"item": "minecraft:gunpowder",
-			"count": 2
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:iron_ingot"
+			}
 		}
-	},
+	],
 	"result": {
 		"id": "mchalo:brute_shot"
 	}

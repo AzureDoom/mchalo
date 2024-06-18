@@ -1,6 +1,25 @@
 {
 	"type": "mchalo:gun_table",
-	"pattern": "bc",
+	"ingredients": [
+		{
+			"count": 10,
+			"ingredient": {
+				"item": "minecraft:amethyst_shard"
+			}
+		},
+		{
+			"count": 1,
+			"ingredient": {
+				"item": "minecraft:repeater"
+			}
+		},
+		{
+			"count": 20,
+			"ingredient": {
+				"item": "minecraft:iron_nugget"
+			}
+		}
+	],
 	"key": {
 		"b": {
 			"item": "minecraft:redstone",
