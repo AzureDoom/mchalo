@@ -1,5 +1,3 @@
-v2.0.1
+v2.0.2
 
-- Updated to 1.20.6
-- Increased Granade throwing range
-- Fixed dup recipes 
+- Updated to 1.21
