@@ -1,5 +1,6 @@
 package mod.azure.mchalo;
 
+import mod.azure.azurelib.common.internal.common.AzureLib;
 import mod.azure.azurelib.common.internal.common.AzureLibMod;
 import mod.azure.azurelib.common.internal.common.config.format.ConfigFormats;
 import mod.azure.mchalo.blocks.GunTableBlock;
@@ -42,6 +43,7 @@ public final class FabricLibMod implements ModInitializer {
         Items.initItems();
         Entities.initEntities();
         new PacketHandler().registerMessages();
+        AzureLib.hasKeyBindsInitialized = true;
         Registry.register(BuiltInRegistries.MENU, CommonMod.modResource("guntable_screen_type"), SCREEN_HANDLER_TYPE);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ITEM_GROUP, FabricItemGroup.builder().icon(() -> new ItemStack(Items.ENERGYSWORD)) // icon
                 .title(Component.translatable("itemGroup.mchalo.items")) // title
