@@ -1,5 +1,6 @@
 package mod.azure.mchalo.mixins;
 
+import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.item.EnergySwordItem;
 import mod.azure.mchalo.item.HaloGunBase;
 import mod.azure.mchalo.item.PropShieldItem;
@@ -27,7 +28,8 @@ public abstract class AnvilScreenHandlerMixin extends ItemCombinerMenu {
     private void blockMending(CallbackInfo ci) {
         var leftStack = this.inputSlots.getItem(0).copy();
         var rightStack = this.inputSlots.getItem(1).copy();
-        if ((leftStack.getItem() instanceof HaloGunBase || leftStack.getItem() instanceof EnergySwordItem || leftStack.getItem() instanceof PropShieldItem) && (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, rightStack) > 0 || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, rightStack) > 0)) {
+        if ((leftStack.getItem() instanceof HaloGunBase || leftStack.getItem() instanceof EnergySwordItem || leftStack.getItem() instanceof PropShieldItem) && (EnchantmentHelper.hasTag(rightStack,
+                CommonMod.HAS_MENDING))) {
             var repaired = ItemStack.EMPTY;
             this.resultSlots.setItem(0, repaired);
             this.broadcastChanges();

@@ -1,11 +1,8 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -27,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlasmaGEntity extends AbstractArrow {
     protected static float bulletdamage;
+    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
     private int idleTicks = 0;
 
     public PlasmaGEntity(EntityType<? extends PlasmaGEntity> entityType, Level world) {
@@ -57,12 +55,13 @@ public class PlasmaGEntity extends AbstractArrow {
         if (this.tickCount >= 80) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         if (this.level().isClientSide)
-            this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaGParticle(), true, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaGParticle(), true, this.getX(), this.getY(),
+                    this.getZ(), 0, 0, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("life", (short)this.tickCount);
+        tag.putShort("life", (short) this.tickCount);
     }
 
     @Override
@@ -74,8 +73,6 @@ public class PlasmaGEntity extends AbstractArrow {
     public boolean isNoGravity() {
         return !this.isUnderWater();
     }
-
-    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
 
     @Override
     public void setSoundEvent(@NotNull SoundEvent soundIn) {
@@ -99,7 +96,8 @@ public class PlasmaGEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         var entity = entityHitResult.getEntity();
-        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(entity) && !this.level().isClientSide)
+        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(
+                entity) && !this.level().isClientSide)
             this.remove(Entity.RemovalReason.DISCARDED);
         var entity2 = this.getOwner();
         DamageSource damageSource2;
@@ -110,14 +108,10 @@ public class PlasmaGEntity extends AbstractArrow {
         }
         if (entity.hurt(damageSource2, bulletdamage)) {
             if (entity instanceof LivingEntity livingEntity) {
-                if (!this.level().isClientSide && entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingEntity, entity2);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity) entity2, livingEntity);
-                }
-
                 this.doPostHurtEffects(livingEntity);
                 if (livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
-                    ((ServerPlayer) entity2).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+                    ((ServerPlayer) entity2).connection.send(
+                            new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
         } else {
             if (!this.level().isClientSide) this.remove(Entity.RemovalReason.DISCARDED);

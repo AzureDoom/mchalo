@@ -1,11 +1,8 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -52,7 +49,7 @@ public class PlasmaEntity extends AbstractArrow {
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("life", (short)this.tickCount);
+        tag.putShort("life", (short) this.tickCount);
     }
 
     @Override
@@ -69,7 +66,8 @@ public class PlasmaEntity extends AbstractArrow {
         if (this.tickCount >= 80) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         if (this.level().isClientSide)
-            this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaParticle(), true, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaParticle(), true, this.getX(), this.getY(),
+                    this.getZ(), 0, 0, 0);
     }
 
     @Override
@@ -97,7 +95,8 @@ public class PlasmaEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         var entity = entityHitResult.getEntity();
-        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(entity) && !this.level().isClientSide)
+        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(
+                entity) && !this.level().isClientSide)
             this.remove(Entity.RemovalReason.DISCARDED);
         var entity2 = this.getOwner();
         DamageSource damageSource2;
@@ -108,14 +107,10 @@ public class PlasmaEntity extends AbstractArrow {
         }
         if (entity.hurt(damageSource2, bulletdamage)) {
             if (entity instanceof LivingEntity livingEntity) {
-                if (!this.level().isClientSide && entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingEntity, entity2);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity) entity2, livingEntity);
-                }
-
                 this.doPostHurtEffects(livingEntity);
                 if (livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
-                    ((ServerPlayer) entity2).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+                    ((ServerPlayer) entity2).connection.send(
+                            new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
         } else {
             if (!this.level().isClientSide) this.remove(Entity.RemovalReason.DISCARDED);

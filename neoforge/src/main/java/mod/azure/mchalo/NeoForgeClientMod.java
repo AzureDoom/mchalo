@@ -41,8 +41,8 @@ public record NeoForgeClientMod() {
 
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        ItemProperties.register(Items.SNIPER.get(), new ResourceLocation("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
-        ItemProperties.register(Items.BATTLERIFLE.get(), new ResourceLocation("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
+        ItemProperties.register(Items.SNIPER.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
+        ItemProperties.register(Items.BATTLERIFLE.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
     }
 
     @SubscribeEvent

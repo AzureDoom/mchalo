@@ -1,5 +1,6 @@
 package mod.azure.mchalo;
 
+import mod.azure.azurelib.common.internal.common.AzureLib;
 import mod.azure.azurelib.common.internal.common.AzureLibMod;
 import mod.azure.azurelib.common.internal.common.config.format.ConfigFormats;
 import mod.azure.mchalo.blocks.GunTableBlock;
@@ -31,6 +32,7 @@ public final class NeoForgeMod {
         Tabs.TABS.register(modEventBus);
         Recipes.SERIAL.register(modEventBus);
         Screens.CONTAIN.register(modEventBus);
+        AzureLib.hasKeyBindsInitialized = true;
     }
 
     private void setup(final FMLCommonSetupEvent event) {

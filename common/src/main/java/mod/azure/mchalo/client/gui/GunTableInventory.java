@@ -5,9 +5,10 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.NotNull;
 
-public class GunTableInventory implements Container {
+public class GunTableInventory implements Container, RecipeInput {
     private final GunTableScreenHandler container;
 
     private final NonNullList<ItemStack> stacks;
@@ -31,6 +32,11 @@ public class GunTableInventory implements Container {
 
     public ItemStack getItem(int slot) {
         return this.stacks.get(slot);
+    }
+
+    @Override
+    public int size() {
+        return 5;
     }
 
     public ItemStack removeItem(int slot, int amount) {

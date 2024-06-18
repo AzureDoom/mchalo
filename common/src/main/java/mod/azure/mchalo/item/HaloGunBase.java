@@ -111,7 +111,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             case MAULER -> {
                 player.getCooldowns().addCooldown(this, 18);
                 for (int y = 0; y < 8; ++y) {
-                    var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
+                    var bulletEntity = CommonHelper.createBullet(level, getAttackDamage());
                     bulletEntity.shootFromRotation(player, player.getXRot() + (y == 3 ? 3 : y == 4 ? -3 : 0), player.getYRot() + (y == 3 ? 3 : y == 2 ? -3 : y == 4 ? -3 : 0), 0.5F, 3.0F, 1.0F);
                     bulletEntity.tickCount = 37;
                     bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
@@ -127,7 +127,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             }
             case SNIPER -> {
                 player.getCooldowns().addCooldown(this, 35);
-                var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
+                var bulletEntity = CommonHelper.createBullet(level, getAttackDamage());
                 bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
                 bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(bulletEntity);
@@ -140,7 +140,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             case BRBULLET -> {
                 player.getCooldowns().addCooldown(this, 12);
                 for (int y = 0; y < 3; ++y) {
-                    var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
+                    var bulletEntity = CommonHelper.createBullet(level, getAttackDamage());
                     bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot() + (y == 1 ? 0.0F : y == 2 ? -0.5F : 0.5F), 0.5F, 3.0F, 1.0F);
                     bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                     level.addFreshEntity(bulletEntity);
@@ -148,21 +148,21 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             }
             case BULLET -> {
                 player.getCooldowns().addCooldown(this, 8);
-                var bulletEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
+                var bulletEntity = CommonHelper.createBullet(level, getAttackDamage());
                 bulletEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
                 bulletEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(bulletEntity);
             }
             case GRENADE -> {
                 player.getCooldowns().addCooldown(this, 12);
-                var nadeEntity = CommonHelper.createGrenade(level, itemStack, player);
+                var nadeEntity = CommonHelper.createGrenade(level);
                 nadeEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F * 3.0F, 1.0F);
                 nadeEntity.moveTo(player.getX(), player.getY(0.95D), player.getZ(), 0, 0);
                 level.addFreshEntity(nadeEntity);
             }
             case NEEDLE -> {
                 player.getCooldowns().addCooldown(this, 3);
-                var needleEntity = CommonHelper.createNeedle(level, itemStack, player, getAttackDamage());
+                var needleEntity = CommonHelper.createNeedle(level, getAttackDamage());
                 needleEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
                 needleEntity.tickCount = 23;
                 needleEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
@@ -170,14 +170,14 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             }
             case PLASMA -> {
                 player.getCooldowns().addCooldown(this, 8);
-                var plamsaEntity = CommonHelper.createPlamsa(level, itemStack, player, getAttackDamage());
+                var plamsaEntity = CommonHelper.createPlamsa(level, getAttackDamage());
                 plamsaEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
                 plamsaEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                 level.addFreshEntity(plamsaEntity);
             }
             case PLASMAG -> {
                 player.getCooldowns().addCooldown(this, 5);
-                var plasmaGEntity = CommonHelper.createGPlamsa(level, itemStack, player, getAttackDamage());
+                var plasmaGEntity = CommonHelper.createGPlamsa(level, getAttackDamage());
                 plasmaGEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F * 3.0F, 1.0F);
                 plasmaGEntity.tickCount = 33;
                 plasmaGEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
@@ -186,7 +186,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             case SHELL -> {
                 player.getCooldowns().addCooldown(this, 18);
                 for (int y = 0; y < 5; ++y) {
-                    var shellEntity = CommonHelper.createBullet(level, itemStack, player, getAttackDamage());
+                    var shellEntity = CommonHelper.createBullet(level, getAttackDamage());
                     shellEntity.shootFromRotation(player, player.getXRot() + (y == 3 ? 1 : y == 4 ? -1 : 0), player.getYRot() + (y == 3 ? 1 : y == 2 ? -1 : y == 4 ? -1 : 0), 0.5F, 3.0F, 1.0F);
                     shellEntity.moveTo(player.getX(), player.getY(0.6D), player.getZ(), 0, 0);
                     level.addFreshEntity(shellEntity);
@@ -197,7 +197,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
 
     public void fireWeapon(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull Player player) {
         CommonHelper.spawnLightSource(player, player.level().isWaterAt(player.blockPosition()));
-        itemStack.hurtAndBreak(1, player, LivingEntity.getEquipmentSlotForItem(itemStack));
+        itemStack.hurtAndBreak(1, player, player.getEquipmentSlotForItem(itemStack));
         if (this.getFiringSound() != null)
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getFiringSound(), SoundSource.PLAYERS, 0.25F, 1.3F);
         if (!level.isClientSide) {
@@ -243,7 +243,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
         if (user.getMainHandItem().getItem() instanceof HaloGunBase gunBase) {
             while (!user.isCreative() && user.getMainHandItem().getDamageValue() != 0 && user.getInventory().countItem(gunBase.getAmmoType()) > 0) {
                 CommonHelper.removeAmmo(gunBase.getAmmoType(), user);
-                user.getMainHandItem().hurtAndBreak(-gunBase.getClipSize(), user, LivingEntity.getEquipmentSlotForItem(user.getMainHandItem()));
+                user.getMainHandItem().hurtAndBreak(-gunBase.getClipSize(), user, user.getEquipmentSlotForItem(user.getMainHandItem()));
                 user.getMainHandItem().setPopTime(3);
                 if (gunBase.getReloadSound() != null)
                     user.level().playSound(null, user.getX(), user.getY(), user.getZ(), gunBase.getReloadSound(), SoundSource.PLAYERS, 1.00F, 1.0F);
@@ -273,7 +273,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity livingEntity) {
         return 72000;
     }
 

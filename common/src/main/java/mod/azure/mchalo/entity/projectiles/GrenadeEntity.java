@@ -1,7 +1,6 @@
 package mod.azure.mchalo.entity.projectiles;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
@@ -33,9 +32,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class GrenadeEntity extends AbstractArrow implements GeoEntity {
-    protected String type;
-    private static final EntityDataAccessor<Boolean> SPINNING = SynchedEntityData.defineId(GrenadeEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SPINNING = SynchedEntityData.defineId(GrenadeEntity.class,
+            EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
+    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
+    protected String type;
 
     public GrenadeEntity(EntityType<? extends GrenadeEntity> entityType, Level world) {
         super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
@@ -52,11 +53,6 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return super.getAddEntityPacket();
-    }
-
-    @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SPINNING, false);
@@ -64,7 +60,7 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("life", (short)this.tickCount);
+        tag.putShort("life", (short) this.tickCount);
     }
 
     @Override
@@ -109,8 +105,6 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
         if (!onGround()) setSpinning(true);
     }
 
-    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
-
     @Override
     public void setSoundEvent(@NotNull SoundEvent soundIn) {
         this.hitSound = soundIn;
@@ -118,7 +112,7 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
 
     @Override
     protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
-        return SoundEvents.SOUL_ESCAPE;
+        return SoundEvents.SOUL_ESCAPE.value();
     }
 
     @Override

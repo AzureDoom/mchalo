@@ -1,6 +1,7 @@
 package mod.azure.mchalo;
 
 import mod.azure.azurelib.common.api.client.helper.ClientUtils;
+import mod.azure.azurelib.common.internal.common.AzureLib;
 import mod.azure.mchalo.client.gui.GunTableScreen;
 import mod.azure.mchalo.client.render.ProjectileRender;
 import mod.azure.mchalo.client.render.projectiles.EmptyRender;
@@ -21,6 +22,7 @@ public class FabricClientLibMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        AzureLib.hasKeyBindsInitialized = true;
         new PacketHandler().registerMessages();
         MenuScreens.register(FabricLibMod.SCREEN_HANDLER_TYPE, GunTableScreen::new);
         EntityRendererRegistry.register(Entities.BULLET, EmptyRender::new);
@@ -29,11 +31,11 @@ public class FabricClientLibMod implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PLASMA, EmptyRender::new);
         EntityRendererRegistry.register(Entities.PLASMAG, EmptyRender::new);
         EntityRendererRegistry.register(Entities.GRENADE, ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
-        ItemProperties.register(Items.SNIPER, new ResourceLocation("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
+        ItemProperties.register(Items.SNIPER, ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
             if (livingEntity != null) return ClientUtils.SCOPE.isDown() ? 1.0F : 0.0F;
             return 0.0F;
         });
-        ItemProperties.register(Items.BATTLERIFLE, new ResourceLocation("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
+        ItemProperties.register(Items.BATTLERIFLE, ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
             if (livingEntity != null) return ClientUtils.SCOPE.isDown() ? 1.0F : 0.0F;
             return 0.0F;
         });

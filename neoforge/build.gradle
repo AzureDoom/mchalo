@@ -47,7 +47,7 @@ dependencies {
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}"
     implementation "dev.architectury:architectury-neoforge:${arch_version}"
-    implementation "maven.modrinth:common-network:ICH3eKu6"
+    implementation "maven.modrinth:common-network:gtfg7U0f"
 }
 
 if (file('key.properties').exists()) {

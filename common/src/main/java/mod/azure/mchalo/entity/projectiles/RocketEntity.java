@@ -1,13 +1,10 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +21,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class RocketEntity extends AbstractArrow {
+    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
     private int idleTicks = 0;
 
     public RocketEntity(EntityType<? extends RocketEntity> entityType, Level world) {
@@ -37,7 +35,7 @@ public class RocketEntity extends AbstractArrow {
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("life", (short)this.tickCount);
+        tag.putShort("life", (short) this.tickCount);
     }
 
     @Override
@@ -90,8 +88,6 @@ public class RocketEntity extends AbstractArrow {
     public boolean isNoGravity() {
         return !this.isUnderWater();
     }
-
-    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
 
     @Override
     public void setSoundEvent(@NotNull SoundEvent soundIn) {

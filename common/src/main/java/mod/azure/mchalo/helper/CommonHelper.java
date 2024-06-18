@@ -10,9 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 public class CommonHelper {
@@ -92,31 +89,27 @@ public class CommonHelper {
         return null;
     }
 
-    public static BulletEntity createBullet(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new BulletEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+    public static BulletEntity createBullet(Level worldIn, Float damage) {
+        return new BulletEntity(worldIn, damage);
     }
 
-    public static NeedleEntity createNeedle(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new NeedleEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+    public static NeedleEntity createNeedle(Level worldIn, Float damage) {
+        return new NeedleEntity(worldIn, damage);
     }
 
     public static RocketEntity createRocket(Level world) {
         return new RocketEntity(world);
     }
 
-    public static PlasmaEntity createPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new PlasmaEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+    public static PlasmaEntity createPlamsa(Level worldIn, Float damage) {
+        return new PlasmaEntity(worldIn, damage);
     }
 
-    public static PlasmaGEntity createGPlamsa(Level worldIn, ItemStack stack, LivingEntity shooter, Float damage) {
-        var enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER, stack);
-        return new PlasmaGEntity(worldIn, enchantmentLevel > 0 ? (damage + (enchantmentLevel * 1.5F + 0.5F)) : damage);
+    public static PlasmaGEntity createGPlamsa(Level worldIn, Float damage) {
+        return new PlasmaGEntity(worldIn, damage);
     }
 
-    public static GrenadeEntity createGrenade(Level worldIn, ItemStack stack, LivingEntity shooter) {
+    public static GrenadeEntity createGrenade(Level worldIn) {
         return new GrenadeEntity(worldIn, false);
     }
 }

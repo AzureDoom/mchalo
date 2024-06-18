@@ -71,7 +71,7 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
         if (user.getItemInHand(hand).getItem() instanceof EnergySwordItem) {
             while (user.getItemInHand(hand).getDamageValue() != 0 && user.getInventory().countItem(Services.ITEMS_HELPER.getBatteriesAmmo()) > 0) {
                 CommonHelper.removeAmmo(Services.ITEMS_HELPER.getBatteriesAmmo(), user);
-                user.getItemInHand(hand).hurtAndBreak(-20, user, LivingEntity.getEquipmentSlotForItem(user.getMainHandItem()));
+                user.getItemInHand(hand).hurtAndBreak(-20, user, user.getEquipmentSlotForItem(user.getMainHandItem()));
                 user.getItemInHand(hand).setPopTime(3);
             }
         }
@@ -98,7 +98,7 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
             playerentity.getCooldowns().addCooldown(this, 20);
             var aabb = new AABB(playerentity.blockPosition().above()).inflate(2D, 2D, 2D);
             playerentity.level().getEntities(playerentity, aabb).forEach(e -> doDamage(playerentity, e));
-            stack.hurtAndBreak(1, playerentity, LivingEntity.getEquipmentSlotForItem(stack));
+            stack.hurtAndBreak(1, playerentity, playerentity.getEquipmentSlotForItem(stack));
         }
         return super.hurtEnemy(stack, target, miner);
     }

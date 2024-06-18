@@ -1,7 +1,6 @@
 package mod.azure.mchalo.entity.projectiles;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.common.internal.common.network.packet.EntityPacket;
 import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
@@ -10,8 +9,6 @@ import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.mchalo.helper.CommonHelper;
 import mod.azure.mchalo.platform.Services;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -32,8 +29,9 @@ import org.jetbrains.annotations.NotNull;
 public class NeedleEntity extends AbstractArrow implements GeoEntity {
 
     private static float bulletdamage;
-    private int idleTicks = 0;
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
+    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
+    private int idleTicks = 0;
 
     public NeedleEntity(EntityType<? extends NeedleEntity> entityType, Level world) {
         super(entityType, world);
@@ -57,7 +55,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("life", (short)this.tickCount);
+        tag.putShort("life", (short) this.tickCount);
     }
 
     @Override
@@ -84,7 +82,9 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
         if (this.tickCount >= 40) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         var world = this.level();
-        var livingEntities = world.getEntitiesOfClass(Monster.class, new AABB(this.getX() - 6.0, this.getY() - 6.0, this.getZ() - 6.0, this.getX() + 6.0, this.getY() + 6.0, this.getZ() + 6.0), entity1 -> entity1 != this.getOwner());
+        var livingEntities = world.getEntitiesOfClass(Monster.class,
+                new AABB(this.getX() - 6.0, this.getY() - 6.0, this.getZ() - 6.0, this.getX() + 6.0, this.getY() + 6.0,
+                        this.getZ() + 6.0), entity1 -> entity1 != this.getOwner());
         if (!livingEntities.isEmpty()) {
             var first = livingEntities.get(0);
             var entityPos = new Vec3(first.getX(), first.getY() + first.getEyeHeight(), first.getZ());
@@ -106,8 +106,6 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     public boolean isNoGravity() {
         return !this.isUnderWater();
     }
-
-    public SoundEvent hitSound = this.getDefaultHitGroundSoundEvent();
 
     @Override
     public void setSoundEvent(@NotNull SoundEvent soundIn) {
@@ -131,7 +129,8 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         var entity = entityHitResult.getEntity();
-        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(entity) && !this.level().isClientSide)
+        if (entityHitResult.getType() != HitResult.Type.ENTITY || !entityHitResult.getEntity().is(
+                entity) && !this.level().isClientSide)
             this.remove(Entity.RemovalReason.DISCARDED);
         var entity2 = this.getOwner();
         DamageSource damageSource2;
@@ -145,14 +144,11 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
                 if (!this.level().isClientSide) {
                     livingEntity.setArrowCount(livingEntity.getArrowCount() + 1);
                 }
-                if (!this.level().isClientSide && entity2 instanceof LivingEntity livingEntity1) {
-                    EnchantmentHelper.doPostHurtEffects(livingEntity, entity2);
-                    EnchantmentHelper.doPostDamageEffects(livingEntity1, livingEntity);
-                }
-
                 this.doPostHurtEffects(livingEntity);
                 if (entity2 != null && livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
-                    ((ServerPlayer) entity2).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, ClientboundGameEventPacket.DEMO_PARAM_INTRO));
+                    ((ServerPlayer) entity2).connection.send(
+                            new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER,
+                                    ClientboundGameEventPacket.DEMO_PARAM_INTRO));
                 this.remove(RemovalReason.KILLED);
             }
         } else {

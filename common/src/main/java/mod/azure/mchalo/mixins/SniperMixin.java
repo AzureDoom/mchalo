@@ -1,12 +1,14 @@
 package mod.azure.mchalo.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.azure.azurelib.common.api.client.helper.ClientUtils;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.platform.Services;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,7 +35,7 @@ public abstract class SniperMixin {
     }
 
     @Inject(at = @At("TAIL"), method = "render")
-    private void render(GuiGraphics guiGraphics, float particalticket, CallbackInfo info) {
+    private void render(GuiGraphics guiGraphics, DeltaTracker partialTicks, CallbackInfo ci) {
         assert this.minecraft.player != null;
         var itemStack = this.minecraft.player.getInventory().getSelected();
         if (this.minecraft.options.getCameraType().isFirstPerson() && itemStack.is(Services.ITEMS_HELPER.getSniper())) {
@@ -58,13 +60,11 @@ public abstract class SniperMixin {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, identifier);
         var tessellator = Tesselator.getInstance();
-        var bufferBuilder = tessellator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(0.0D, guiGraphics.guiHeight(), -90.0D).uv(0.0F, 1.0F).endVertex();
-        bufferBuilder.vertex(guiGraphics.guiWidth(), guiGraphics.guiHeight(), -90.0D).uv(1.0F, 1.0F).endVertex();
-        bufferBuilder.vertex(guiGraphics.guiWidth(), 0.0D, -90.0D).uv(1.0F, 0.0F).endVertex();
-        bufferBuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0F, 0.0F).endVertex();
-        tessellator.end();
+        var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.addVertex(0.0F, guiGraphics.guiHeight(), -90.0F).setUv(0.0F, 1.0F);
+        bufferBuilder.addVertex(guiGraphics.guiWidth(), guiGraphics.guiHeight(), -90.0F).setUv(1.0F, 1.0F);
+        bufferBuilder.addVertex(guiGraphics.guiWidth(), 0.0F, -90.0F).setUv(1.0F, 0.0F);
+        bufferBuilder.addVertex(0.0F, 0.0F, -90.0F).setUv(0.0F, 0.0F);
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
