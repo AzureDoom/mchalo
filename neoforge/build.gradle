@@ -43,7 +43,6 @@ repositories {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
     implementation "mod.azure.azurelib:azurelib-neo-${minecraft_version}:${azurelib_version}"
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}"
