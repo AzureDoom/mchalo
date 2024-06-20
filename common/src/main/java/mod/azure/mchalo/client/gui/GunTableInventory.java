@@ -63,7 +63,7 @@ public class GunTableInventory implements Container, RecipeInput {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return true;
     }
 

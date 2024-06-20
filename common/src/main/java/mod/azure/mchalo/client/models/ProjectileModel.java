@@ -17,21 +17,15 @@ public class ProjectileModel<T extends GeoEntity> extends DefaultedEntityGeoMode
 
     @Override
     public ResourceLocation getModelResource(T animatable) {
-        switch (entityType) {
-            case GRENADE -> {
-                return CommonMod.modResource("geo/item/grenade/grenade.geo.json");
-            }
-        }
+        if (entityType == EntityEnum.GRENADE)
+            return CommonMod.modResource("geo/item/grenade/grenade.geo.json");
         return super.getModelResource(animatable);
     }
 
     @Override
     public ResourceLocation getAnimationResource(T animatable) {
-        switch (entityType) {
-            case GRENADE -> {
-                return CommonMod.modResource("animations/item/grenade/grenade.animation.json");
-            }
-        }
+        if (entityType == EntityEnum.GRENADE)
+            return CommonMod.modResource("animations/item/grenade/grenade.animation.json");
         return super.getAnimationResource(animatable);
     }
 

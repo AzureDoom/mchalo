@@ -51,7 +51,6 @@ public class GunBlockEntity extends BlockEntity implements ImplementedInventory,
 
     @Override
     public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory inventory, @NotNull Player player) {
-        assert level != null;
         return new GunTableScreenHandler(syncId, inventory, ContainerLevelAccess.create(level, worldPosition));
     }
 }

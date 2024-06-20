@@ -106,7 +106,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
         return InteractionResultHolder.consume(itemStack);
     }
 
-    private void autoFire(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull Player player) {
+    private void autoFire(@NotNull Level level, @NotNull Player player) {
         switch (this.getProjectileType()) {
             case MAULER -> {
                 player.getCooldowns().addCooldown(this, 18);
@@ -135,7 +135,7 @@ public abstract class HaloGunBase extends Item implements GeoItem {
         }
     }
 
-    private void singleFire(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull Player player) {
+    private void singleFire(@NotNull Level level, @NotNull Player player) {
         switch (this.getProjectileType()) {
             case BRBULLET -> {
                 player.getCooldowns().addCooldown(this, 12);
@@ -202,10 +202,10 @@ public abstract class HaloGunBase extends Item implements GeoItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getFiringSound(), SoundSource.PLAYERS, 0.25F, 1.3F);
         if (!level.isClientSide) {
             if (itemStack.getDamageValue() < (itemStack.getMaxDamage() - 1)) {
-                this.autoFire(itemStack, level, player);
+                this.autoFire(level, player);
             }
             if (itemStack.getDamageValue() < (itemStack.getMaxDamage() - 1) && !player.getCooldowns().isOnCooldown(this)) {
-                this.singleFire(itemStack, level, player);
+                this.singleFire(level, player);
             }
         }
     }

@@ -113,7 +113,6 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
     @Override
     public void createRenderer(Consumer<RenderProvider> consumer) {
         consumer.accept(new RenderProvider() {
-
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return new GunRender<EnergySwordItem>("energy_sword");

@@ -89,7 +89,7 @@ public class GunTableScreen extends AbstractContainerScreen<GunTableScreenHandle
     }
 
     @Override
-    public void render(GuiGraphics matrices, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);
         List<RecipeHolder<GunTableRecipe>> tradeOfferList = this.menu.getRecipes();

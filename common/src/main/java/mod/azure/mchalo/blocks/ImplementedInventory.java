@@ -15,10 +15,6 @@ public interface ImplementedInventory extends Container {
         return () -> items;
     }
 
-    static ImplementedInventory ofSize(int size) {
-        return of(NonNullList.withSize(size, ItemStack.EMPTY));
-    }
-
     @Override
     default int getContainerSize() {
         return getItems().size();

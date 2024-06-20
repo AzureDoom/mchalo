@@ -104,8 +104,7 @@ public class GunTableBlock extends Block implements EntityBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        var direction = state.getValue(FACING);
-        return direction.getAxis() == Direction.Axis.X ? Z_AXIS_AABB : X_AXIS_AABB;
+        return state.getValue(FACING).getAxis() == Direction.Axis.X ? Z_AXIS_AABB : X_AXIS_AABB;
     }
 
     @Override

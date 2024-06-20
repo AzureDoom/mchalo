@@ -21,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +77,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
         var idleOpt = 100;
         if (getDeltaMovement().lengthSqr() < 0.01) idleTicks++;
         else idleTicks = 0;
-        if (idleOpt <= 0 || idleTicks < idleOpt) super.tick();
+        if (idleTicks < idleOpt) super.tick();
         if (this.tickCount >= 40) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         var world = this.level();
@@ -86,7 +85,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
                 new AABB(this.getX() - 6.0, this.getY() - 6.0, this.getZ() - 6.0, this.getX() + 6.0, this.getY() + 6.0,
                         this.getZ() + 6.0), entity1 -> entity1 != this.getOwner());
         if (!livingEntities.isEmpty()) {
-            var first = livingEntities.get(0);
+            var first = livingEntities.getFirst();
             var entityPos = new Vec3(first.getX(), first.getY() + first.getEyeHeight(), first.getZ());
             var distance = entityPos.subtract(this.getX(), this.getY() + this.getEyeHeight(), this.getZ());
             var entityDirect = distance.normalize();
@@ -145,7 +144,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
                     livingEntity.setArrowCount(livingEntity.getArrowCount() + 1);
                 }
                 this.doPostHurtEffects(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
+                if (livingEntity != entity2 && livingEntity instanceof Player && entity2 instanceof ServerPlayer && !this.isSilent())
                     ((ServerPlayer) entity2).connection.send(
                             new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER,
                                     ClientboundGameEventPacket.DEMO_PARAM_INTRO));
