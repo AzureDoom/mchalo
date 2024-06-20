@@ -14,4 +14,14 @@ public class NeoMCHaloSoundsHelper implements MCHaloSoundsHelper {
     public SoundEvent getNeedlerSound() {
         return Sounds.NEEDLER.get();
     }
+
+    @Override
+    public SoundEvent getEngeryOpenSound() {
+        return Sounds.ENERGYSWORDOPEN.get();
+    }
+
+    @Override
+    public SoundEvent getEngeryLoopSound() {
+        return Sounds.ENERGYSWORDLOOP.get();
+    }
 }

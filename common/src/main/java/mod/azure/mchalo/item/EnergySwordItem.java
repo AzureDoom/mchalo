@@ -45,11 +45,12 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
 
     @Override
     public void registerControllers(ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, controller, event -> PlayState.CONTINUE).triggerableAnim("open", RawAnimation.begin().thenPlay("opening").thenLoop("open_loop")).triggerableAnim("close", RawAnimation.begin().thenPlayAndHold("closing")).setSoundKeyframeHandler(event -> {
-            if (event.getKeyframeData().getSound().matches("energy_open")) {
-            }
-            if (event.getKeyframeData().getSound().matches("energy_loop")) {
-            }
+        controllers.add(new AnimationController<>(this, controller, event -> PlayState.CONTINUE)
+                .triggerableAnim("open", RawAnimation.begin().thenPlay("opening").thenLoop("open_loop"))
+                .triggerableAnim("close", RawAnimation.begin().thenPlayAndHold("closing"))
+                .setSoundKeyframeHandler(event -> {
+                    if (event.getKeyframeData().getSound().matches("energy_open"))
+                        ClientUtils.getClientPlayer().playSound(Services.SOUNDS_HELPER.getEngeryOpenSound(), 1.0f, 1.0f);
         }));
     }
 

@@ -14,4 +14,14 @@ public class FabricMCHaloSoundsHelper implements MCHaloSoundsHelper {
     public SoundEvent getNeedlerSound() {
         return Sounds.NEEDLER;
     }
+
+    @Override
+    public SoundEvent getEngeryOpenSound() {
+        return Sounds.ENERGYSWORDOPEN;
+    }
+
+    @Override
+    public SoundEvent getEngeryLoopSound() {
+        return Sounds.ENERGYSWORDLOOP;
+    }
 }

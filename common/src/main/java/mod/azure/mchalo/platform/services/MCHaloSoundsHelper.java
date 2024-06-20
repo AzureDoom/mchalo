@@ -5,4 +5,6 @@ import net.minecraft.sounds.SoundEvent;
 public interface MCHaloSoundsHelper {
     SoundEvent getRocketSound();
     SoundEvent getNeedlerSound();
+    SoundEvent getEngeryOpenSound();
+    SoundEvent getEngeryLoopSound();
 }
