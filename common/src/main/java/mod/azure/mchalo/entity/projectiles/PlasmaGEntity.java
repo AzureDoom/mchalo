@@ -1,7 +1,8 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.mchalo.helper.CommonHelper;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
+import mod.azure.mchalo.registry.ModEntities;
+import mod.azure.mchalo.registry.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,7 +33,7 @@ public class PlasmaGEntity extends AbstractArrow {
     }
 
     public PlasmaGEntity(Level world, Float damage) {
-        this(Services.ENTITIES_HELPER.getPlasmaGEntity(), world);
+        this(ModEntities.PLASMAG.get(), world);
         bulletdamage = damage;
     }
 
@@ -54,7 +55,7 @@ public class PlasmaGEntity extends AbstractArrow {
         if (this.tickCount >= 80) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
         if (this.level().isClientSide)
-            this.level().addParticle(Services.PARTICLES_HELPER.getPlasmaGParticle(), true, this.getX(), this.getY(),
+            this.level().addParticle(ModParticles.PLASMAG.get(), true, this.getX(), this.getY(),
                     this.getZ(), 0, 0, 0);
     }
 

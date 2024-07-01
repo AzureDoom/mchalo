@@ -4,12 +4,12 @@ import mod.azure.azurelib.common.api.client.helper.ClientUtils;
 import mod.azure.mchalo.client.gui.GunTableScreen;
 import mod.azure.mchalo.client.render.ProjectileRender;
 import mod.azure.mchalo.client.render.projectiles.EmptyRender;
-import mod.azure.mchalo.helper.EntityEnum;
+import mod.azure.mchalo.entity.projectiles.helper.EntityEnum;
 import mod.azure.mchalo.particle.PlasmaParticle;
-import mod.azure.mchalo.registry.Entities;
-import mod.azure.mchalo.registry.Items;
-import mod.azure.mchalo.registry.Particles;
-import mod.azure.mchalo.registry.Screens;
+import mod.azure.mchalo.registry.ModEntities;
+import mod.azure.mchalo.registry.ModItems;
+import mod.azure.mchalo.registry.ModParticles;
+import mod.azure.mchalo.registry.ModScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,29 +26,30 @@ public record NeoForgeClientMod() {
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(Entities.BULLET.get(), EmptyRender::new);
-        event.registerEntityRenderer(Entities.NEEDLE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
-        event.registerEntityRenderer(Entities.ROCKET.get(), EmptyRender::new);
-        event.registerEntityRenderer(Entities.PLASMA.get(), EmptyRender::new);
-        event.registerEntityRenderer(Entities.PLASMAG.get(), EmptyRender::new);
-        event.registerEntityRenderer(Entities.GRENADE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
+        event.registerEntityRenderer(ModEntities.BULLET.get(), EmptyRender::new);
+        event.registerEntityRenderer(ModEntities.NEEDLE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
+        event.registerEntityRenderer(ModEntities.ROCKET.get(), EmptyRender::new);
+        event.registerEntityRenderer(ModEntities.PLASMA.get(), EmptyRender::new);
+        event.registerEntityRenderer(ModEntities.PLASMAG.get(), EmptyRender::new);
+        event.registerEntityRenderer(ModEntities.GRENADE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
     }
 
     @SubscribeEvent
     public static void registerScreens(final RegisterMenuScreensEvent event){
-        event.register(Screens.SCREEN_HANDLER_TYPE.get(), GunTableScreen::new);
+        event.register(ModScreens.SCREEN_HANDLER_TYPE.get(), GunTableScreen::new);
     }
 
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        ItemProperties.register(Items.SNIPER.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
-        ItemProperties.register(Items.BATTLERIFLE.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
+        ItemProperties.register(
+                ModItems.SNIPER.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
+        ItemProperties.register(ModItems.BATTLERIFLE.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> NeoForgeClientMod.isScoped(livingEntity));
     }
 
     @SubscribeEvent
     public static void registry(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(Particles.PLASMA.get(), PlasmaParticle.PurpleFactory::new);
-        event.registerSpriteSet(Particles.PLASMAG.get(), PlasmaParticle.GreenFactory::new);
+        event.registerSpriteSet(ModParticles.PLASMA.get(), PlasmaParticle.PurpleFactory::new);
+        event.registerSpriteSet(ModParticles.PLASMAG.get(), PlasmaParticle.GreenFactory::new);
     }
 
     public static float isScoped(LivingEntity livingEntity) {

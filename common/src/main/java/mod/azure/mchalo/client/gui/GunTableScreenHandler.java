@@ -1,9 +1,10 @@
 package mod.azure.mchalo.client.gui;
 
 import mod.azure.mchalo.mixins.IngredientAccess;
-import mod.azure.mchalo.platform.Services;
 import mod.azure.mchalo.recipe.GunTableRecipe;
 import mod.azure.mchalo.recipe.GunTableRecipe.Type;
+import mod.azure.mchalo.registry.ModBlocks;
+import mod.azure.mchalo.registry.ModScreens;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -35,7 +36,7 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
 
     // server
     public GunTableScreenHandler(int syncId, Inventory playerInventory, ContainerLevelAccess context) {
-        super(Services.PLATFORM.getGunScreenHandler(), syncId);
+        super(ModScreens.SCREEN_HANDLER_TYPE.get(), syncId);
         this.playerInventory = playerInventory;
         this.gunTableInventory = new GunTableInventory(this);
         GunTableScreenHandler.level = playerInventory.player.level();
@@ -79,7 +80,7 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(context, player, Services.ITEMS_HELPER.getGunTable());
+        return stillValid(context, player, ModBlocks.GUN_TABLE.get());
     }
 
     @Override

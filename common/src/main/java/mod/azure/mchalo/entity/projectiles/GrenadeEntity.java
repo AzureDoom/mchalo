@@ -8,7 +8,7 @@ import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.mchalo.CommonMod;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -37,16 +37,16 @@ public class GrenadeEntity extends AbstractArrow implements GeoEntity {
     protected String type;
 
     public GrenadeEntity(EntityType<? extends GrenadeEntity> entityType, Level world) {
-        super(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
+        super(ModEntities.GRENADE.get(), world);
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
     public GrenadeEntity(Level world) {
-        this(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
+        this(ModEntities.GRENADE.get(), world);
     }
 
     public GrenadeEntity(Level world, boolean spinning) {
-        this(Services.ENTITIES_HELPER.getGrenadeEntity(), world);
+        this(ModEntities.GRENADE.get(), world);
         this.entityData.set(SPINNING, spinning);
     }
 

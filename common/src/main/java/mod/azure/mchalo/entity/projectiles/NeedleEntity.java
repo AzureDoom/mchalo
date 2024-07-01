@@ -6,8 +6,9 @@ import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
-import mod.azure.mchalo.helper.CommonHelper;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
+import mod.azure.mchalo.registry.ModEntities;
+import mod.azure.mchalo.registry.ModSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,7 +39,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
     }
 
     public NeedleEntity(Level world, Float damage) {
-        this(Services.ENTITIES_HELPER.getNeedleEntity(), world);
+        this(ModEntities.NEEDLE.get(), world);
         bulletdamage = damage;
     }
 
@@ -113,7 +114,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
 
     @Override
     protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
-        return Services.SOUNDS_HELPER.getNeedlerSound();
+        return ModSounds.NEEDLER.get();
     }
 
     @Override
@@ -122,7 +123,7 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
         if (!this.level().isClientSide) {
             this.remove(Entity.RemovalReason.DISCARDED);
         }
-        this.setSoundEvent(Services.SOUNDS_HELPER.getNeedlerSound());
+        this.setSoundEvent(ModSounds.NEEDLER.get());
     }
 
     @Override

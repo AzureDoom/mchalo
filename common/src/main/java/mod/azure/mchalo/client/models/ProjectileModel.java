@@ -3,7 +3,7 @@ package mod.azure.mchalo.client.models;
 import mod.azure.azurelib.common.api.client.model.DefaultedEntityGeoModel;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.mchalo.CommonMod;
-import mod.azure.mchalo.helper.EntityEnum;
+import mod.azure.mchalo.entity.projectiles.helper.EntityEnum;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 

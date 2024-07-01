@@ -5,11 +5,7 @@ import mod.azure.mchalo.platform.services.*;
 import java.util.ServiceLoader;
 
 public class Services {
-    public static final MCHaloPlatformHelper PLATFORM = load(MCHaloPlatformHelper.class);
-    public static final MCHaloItemsHelper ITEMS_HELPER = load(MCHaloItemsHelper.class);
-    public static final MCHaloEntitiesHelper ENTITIES_HELPER = load(MCHaloEntitiesHelper.class);
-    public static final MCHaloSoundsHelper SOUNDS_HELPER = load(MCHaloSoundsHelper.class);
-    public static final MCHaloParticlesHelper PARTICLES_HELPER = load(MCHaloParticlesHelper.class);
+    public static final CommonRegistry COMMON_REGISTRY = load(CommonRegistry.class);
 
     private Services() {
     }

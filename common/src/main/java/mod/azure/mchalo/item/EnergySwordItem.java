@@ -12,9 +12,10 @@ import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.mchalo.client.render.GunRender;
-import mod.azure.mchalo.helper.CommonHelper;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
 import mod.azure.mchalo.network.ReloadSwordPacket;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModItems;
+import mod.azure.mchalo.registry.ModSounds;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -50,7 +51,7 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
                 .triggerableAnim("close", RawAnimation.begin().thenPlayAndHold("closing"))
                 .setSoundKeyframeHandler(event -> {
                     if (event.getKeyframeData().getSound().matches("energy_open"))
-                        ClientUtils.getClientPlayer().playSound(Services.SOUNDS_HELPER.getEngeryOpenSound(), 1.0f, 1.0f);
+                        ClientUtils.getClientPlayer().playSound(ModSounds.ENERGYSWORDOPEN.get(), 1.0f, 1.0f);
         }));
     }
 
@@ -70,8 +71,8 @@ public class EnergySwordItem extends SwordItem implements GeoItem {
 
     public static void reload(Player user, InteractionHand hand) {
         if (user.getItemInHand(hand).getItem() instanceof EnergySwordItem) {
-            while (user.getItemInHand(hand).getDamageValue() != 0 && user.getInventory().countItem(Services.ITEMS_HELPER.getBatteriesAmmo()) > 0) {
-                CommonHelper.removeAmmo(Services.ITEMS_HELPER.getBatteriesAmmo(), user);
+            while (user.getItemInHand(hand).getDamageValue() != 0 && user.getInventory().countItem(ModItems.BATTERIES.get()) > 0) {
+                CommonHelper.removeAmmo(ModItems.BATTERIES.get(), user);
                 user.getItemInHand(hand).hurtAndBreak(-20, user, user.getEquipmentSlotForItem(user.getMainHandItem()));
                 user.getItemInHand(hand).setPopTime(3);
             }

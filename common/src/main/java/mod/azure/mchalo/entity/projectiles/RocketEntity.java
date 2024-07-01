@@ -1,8 +1,9 @@
 package mod.azure.mchalo.entity.projectiles;
 
 import mod.azure.mchalo.CommonMod;
-import mod.azure.mchalo.helper.CommonHelper;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
+import mod.azure.mchalo.registry.ModEntities;
+import mod.azure.mchalo.registry.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -30,7 +31,7 @@ public class RocketEntity extends AbstractArrow {
     }
 
     public RocketEntity(Level world) {
-        this(Services.ENTITIES_HELPER.getRocketEntity(), world);
+        this(ModEntities.ROCKET.get(), world);
     }
 
     @Override
@@ -96,7 +97,7 @@ public class RocketEntity extends AbstractArrow {
 
     @Override
     protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
-        return Services.SOUNDS_HELPER.getRocketSound();
+        return ModSounds.ROCKET.get();
     }
 
     @Override
@@ -106,7 +107,7 @@ public class RocketEntity extends AbstractArrow {
             this.doDamage();
             this.remove(Entity.RemovalReason.DISCARDED);
         }
-        this.setSoundEvent(Services.SOUNDS_HELPER.getRocketSound());
+        this.setSoundEvent(ModSounds.ROCKET.get());
     }
 
     @Override

@@ -2,7 +2,7 @@ package mod.azure.mchalo.mixins;
 
 import com.mojang.authlib.GameProfile;
 import mod.azure.azurelib.common.api.client.helper.ClientUtils;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
@@ -24,9 +24,9 @@ public abstract class AbstractClientPlayerEntityMixin extends Player {
     private void render(CallbackInfoReturnable<Float> ci) {
         var itemStack = this.getMainHandItem();
         if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-            if (itemStack.is(Services.ITEMS_HELPER.getSniper()))
+            if (itemStack.is(ModItems.SNIPER.get()))
                 ci.setReturnValue(ClientUtils.SCOPE.isDown() ? 0.1F : 1.0F);
-            if (itemStack.is(Services.ITEMS_HELPER.getBattleRifle()))
+            if (itemStack.is(ModItems.BATTLERIFLE.get()))
                 ci.setReturnValue(ClientUtils.SCOPE.isDown() ? 0.5F : 1.0F);
         }
     }

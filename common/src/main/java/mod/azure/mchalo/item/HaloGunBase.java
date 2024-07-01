@@ -15,11 +15,11 @@ import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.mchalo.client.render.GunRender;
-import mod.azure.mchalo.helper.CommonHelper;
-import mod.azure.mchalo.helper.ProjectileEnum;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
+import mod.azure.mchalo.entity.projectiles.helper.ProjectileEnum;
 import mod.azure.mchalo.network.FiringPacket;
 import mod.azure.mchalo.network.ReloadPacket;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -72,13 +72,13 @@ public abstract class HaloGunBase extends Item implements GeoItem {
 
     public Item getAmmoType() {
         switch (this.getProjectileType()) {
-            case BULLET, BRBULLET -> this.ammoType = Services.ITEMS_HELPER.getBulletAmmo();
-            case NEEDLE -> this.ammoType = Services.ITEMS_HELPER.getNeedlesAmmo();
-            case ROCKET -> this.ammoType = Services.ITEMS_HELPER.getRocketAmmo();
-            case PLASMA, PLASMAG -> this.ammoType = Services.ITEMS_HELPER.getBatteriesAmmo();
-            case GRENADE -> this.ammoType = Services.ITEMS_HELPER.getGrenadeAmmo();
-            case SHELL, MAULER -> this.ammoType = Services.ITEMS_HELPER.getShellAmmo();
-            case SNIPER -> this.ammoType = Services.ITEMS_HELPER.getSniperAmmo();
+            case BULLET, BRBULLET -> this.ammoType = ModItems.BULLETCLIP.get();
+            case NEEDLE -> this.ammoType = ModItems.NEEDLES.get();
+            case ROCKET -> this.ammoType = ModItems.ROCKET.get();
+            case PLASMA, PLASMAG -> this.ammoType = ModItems.BATTERIES.get();
+            case GRENADE -> this.ammoType = ModItems.GRENADE.get();
+            case SHELL, MAULER -> this.ammoType = ModItems.SHOTGUN_CLIP.get();
+            case SNIPER -> this.ammoType = ModItems.SNIPER_ROUND.get();
         }
         return this.ammoType;
     }

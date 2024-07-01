@@ -1,7 +1,7 @@
 package mod.azure.mchalo.entity.projectiles;
 
-import mod.azure.mchalo.helper.CommonHelper;
-import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.entity.projectiles.helper.CommonHelper;
+import mod.azure.mchalo.registry.ModEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -31,7 +31,7 @@ public class BulletEntity extends AbstractArrow {
     }
 
     public BulletEntity(Level world, Float damage) {
-        this(Services.ENTITIES_HELPER.getBulletEntity(), world);
+        this(ModEntities.BULLET.get(), world);
         bulletdamage = damage;
     }
 

@@ -10,7 +10,7 @@ import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.client.models.ProjectileModel;
 import mod.azure.mchalo.entity.projectiles.GrenadeEntity;
 import mod.azure.mchalo.entity.projectiles.RocketEntity;
-import mod.azure.mchalo.helper.EntityEnum;
+import mod.azure.mchalo.entity.projectiles.helper.EntityEnum;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;

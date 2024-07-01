@@ -5,12 +5,13 @@ import mod.azure.azurelib.common.internal.common.AzureLib;
 import mod.azure.mchalo.client.gui.GunTableScreen;
 import mod.azure.mchalo.client.render.ProjectileRender;
 import mod.azure.mchalo.client.render.projectiles.EmptyRender;
-import mod.azure.mchalo.helper.EntityEnum;
+import mod.azure.mchalo.entity.projectiles.helper.EntityEnum;
 import mod.azure.mchalo.network.PacketHandler;
 import mod.azure.mchalo.particle.PlasmaParticle;
-import mod.azure.mchalo.registry.Entities;
-import mod.azure.mchalo.registry.Items;
-import mod.azure.mchalo.registry.Particles;
+import mod.azure.mchalo.registry.ModEntities;
+import mod.azure.mchalo.registry.ModItems;
+import mod.azure.mchalo.registry.ModParticles;
+import mod.azure.mchalo.registry.ModScreens;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -24,22 +25,23 @@ public class FabricClientLibMod implements ClientModInitializer {
     public void onInitializeClient() {
         AzureLib.hasKeyBindsInitialized = true;
         new PacketHandler().registerMessages();
-        MenuScreens.register(FabricLibMod.SCREEN_HANDLER_TYPE, GunTableScreen::new);
-        EntityRendererRegistry.register(Entities.BULLET, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.NEEDLE, ctx -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
-        EntityRendererRegistry.register(Entities.ROCKET, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.PLASMA, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.PLASMAG, EmptyRender::new);
-        EntityRendererRegistry.register(Entities.GRENADE, ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
-        ItemProperties.register(Items.SNIPER, ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
+        MenuScreens.register(ModScreens.SCREEN_HANDLER_TYPE.get(), GunTableScreen::new);
+        EntityRendererRegistry.register(ModEntities.BULLET.get(), EmptyRender::new);
+        EntityRendererRegistry.register(ModEntities.NEEDLE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.NEEEDLE, "needle"));
+        EntityRendererRegistry.register(ModEntities.ROCKET.get(), EmptyRender::new);
+        EntityRendererRegistry.register(ModEntities.PLASMA.get(), EmptyRender::new);
+        EntityRendererRegistry.register(ModEntities.PLASMAG.get(), EmptyRender::new);
+        EntityRendererRegistry.register(ModEntities.GRENADE.get(), ctx -> new ProjectileRender<>(ctx, EntityEnum.GRENADE, "rocket"));
+        ItemProperties.register(
+                ModItems.SNIPER.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
             if (livingEntity != null) return ClientUtils.SCOPE.isDown() ? 1.0F : 0.0F;
             return 0.0F;
         });
-        ItemProperties.register(Items.BATTLERIFLE, ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
+        ItemProperties.register(ModItems.BATTLERIFLE.get(), ResourceLocation.parse("scoped"), (itemStack, clientWorld, livingEntity, seed) -> {
             if (livingEntity != null) return ClientUtils.SCOPE.isDown() ? 1.0F : 0.0F;
             return 0.0F;
         });
-        ParticleFactoryRegistry.getInstance().register(Particles.PLASMA, PlasmaParticle.PurpleFactory::new);
-        ParticleFactoryRegistry.getInstance().register(Particles.PLASMAG, PlasmaParticle.GreenFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.PLASMA.get(), PlasmaParticle.PurpleFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.PLASMAG.get(), PlasmaParticle.GreenFactory::new);
     }
 }

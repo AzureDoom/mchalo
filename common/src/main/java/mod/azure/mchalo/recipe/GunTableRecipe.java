@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mod.azure.mchalo.client.gui.GunTableInventory;
 import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -62,7 +63,7 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return Services.PLATFORM.getRecipeSeializer();
+        return ModRecipes.GUN_TABLE_SERIAL.get();
     }
 
     public static class Type implements RecipeType<GunTableRecipe> {
@@ -83,7 +84,7 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
     public static class Serializer implements RecipeSerializer<GunTableRecipe> {
         public static Serializer INSTANCE = new Serializer();
 
-        private Serializer() {
+        public Serializer() {
         }
 
         public static final MapCodec<GunTableRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(

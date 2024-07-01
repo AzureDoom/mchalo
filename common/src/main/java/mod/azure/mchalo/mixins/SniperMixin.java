@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.azure.azurelib.common.api.client.helper.ClientUtils;
 import mod.azure.mchalo.CommonMod;
 import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModItems;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -38,13 +39,13 @@ public abstract class SniperMixin {
     private void render(GuiGraphics guiGraphics, DeltaTracker partialTicks, CallbackInfo ci) {
         assert this.minecraft.player != null;
         var itemStack = this.minecraft.player.getInventory().getSelected();
-        if (this.minecraft.options.getCameraType().isFirstPerson() && itemStack.is(Services.ITEMS_HELPER.getSniper())) {
+        if (this.minecraft.options.getCameraType().isFirstPerson() && itemStack.is(ModItems.SNIPER.get())) {
             if (ClientUtils.SCOPE.isDown()) {
                 if (this.scoped) this.scoped = false;
                 this.renderSniperOverlay(guiGraphics, sniper);
             } else if (!this.scoped) this.scoped = true;
         }
-        if (this.minecraft.options.getCameraType().isFirstPerson() && itemStack.is(Services.ITEMS_HELPER.getBattleRifle())) {
+        if (this.minecraft.options.getCameraType().isFirstPerson() && itemStack.is(ModItems.BATTLERIFLE.get())) {
             if (ClientUtils.SCOPE.isDown()) {
                 if (this.scoped) this.scoped = false;
                 this.renderSniperOverlay(guiGraphics, battlerifle);

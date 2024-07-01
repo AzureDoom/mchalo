@@ -1,6 +1,6 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.moddev' version "${neo_moddev}"
+    id 'net.neoforged.moddev'
     id 'me.modmuss50.mod-publish-plugin' version "${modmuss50_mod_publish_version}"
 }
 
@@ -9,10 +9,8 @@ neoForge {
     accessTransformers = ["src/main/resources/META-INF/accesstransformer.cfg"]
 
     parchment {
-        // Get versions from https://parchmentmc.org/docs/getting-started
-        // Omit the "v"-prefix in mappingsVersion
-        minecraftVersion = "1.20.6"
-        mappingsVersion = "2024.05.01"
+        minecraftVersion = "${parchment_minecraft}"
+        mappingsVersion = "${parchment_version}"
     }
 
     runs {

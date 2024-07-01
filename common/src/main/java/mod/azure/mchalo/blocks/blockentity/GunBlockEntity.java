@@ -3,6 +3,7 @@ package mod.azure.mchalo.blocks.blockentity;
 import mod.azure.mchalo.blocks.ImplementedInventory;
 import mod.azure.mchalo.client.gui.GunTableScreenHandler;
 import mod.azure.mchalo.platform.Services;
+import mod.azure.mchalo.registry.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -24,7 +25,7 @@ public class GunBlockEntity extends BlockEntity implements ImplementedInventory,
     private final NonNullList<ItemStack> items = NonNullList.withSize(6, ItemStack.EMPTY);
 
     public GunBlockEntity(BlockPos pos, BlockState state) {
-        super(Services.ENTITIES_HELPER.getGunTableEntity(), pos, state);
+        super(ModEntities.GUN_TABLE_ENTITY.get(), pos, state);
     }
 
     @Override
