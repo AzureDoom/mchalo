@@ -17,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemStack output) implements Recipe<GunTableInventory>, Comparable<GunTableRecipe> {
+public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemStack output) implements Recipe<GunTableInventory.CustomRecipeInput>, Comparable<GunTableRecipe> {
 
     @Override
-    public boolean matches(@NotNull GunTableInventory inv, @NotNull Level world) {
+    public boolean matches(@NotNull GunTableInventory.CustomRecipeInput inv, @NotNull Level world) {
         for (int i = 0; i < this.ingredients.size(); i++) {
             var slotStack = inv.getItem(i);
             var pair = ingredients.get(i);
@@ -33,7 +33,7 @@ public record GunTableRecipe(List<Pair<Ingredient, Integer>> ingredients, ItemSt
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull GunTableInventory craftingContainer, HolderLookup.@NotNull Provider registries) {
+    public @NotNull ItemStack assemble(@NotNull GunTableInventory.CustomRecipeInput craftingContainer, HolderLookup.@NotNull Provider registries) {
         return this.getResultItem(registries).copy();
     }
 

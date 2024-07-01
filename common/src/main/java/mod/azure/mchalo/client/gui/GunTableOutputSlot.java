@@ -45,10 +45,10 @@ public class GunTableOutputSlot extends Slot {
     @Override
     public void onTake(Player player, @NotNull ItemStack stack) {
         this.checkTakeAchievements(stack);
-        var optionalGunTableRecipe = player.level().getRecipeManager().getRecipeFor(Type.INSTANCE, gunTableInventory, player.level());
+        var optionalGunTableRecipe = player.level().getRecipeManager().getRecipeFor(Type.INSTANCE, gunTableInventory.recipeInput, player.level());
         if (optionalGunTableRecipe.isPresent()) {
             var gunTableRecipe = optionalGunTableRecipe.get().value();
-            var defaultedList = gunTableRecipe.getRemainingItems(gunTableInventory);
+            var defaultedList = gunTableRecipe.getRemainingItems(gunTableInventory.recipeInput);
 
             for (int i = 0; i < defaultedList.size(); ++i) {
                 var itemStack = this.gunTableInventory.getItem(i);

@@ -8,14 +8,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.NotNull;
 
-public class GunTableInventory implements Container, RecipeInput {
+public class GunTableInventory implements Container {
     private final GunTableScreenHandler container;
 
     private final NonNullList<ItemStack> stacks;
 
+    public GunTableInventory.CustomRecipeInput recipeInput;
+
     public GunTableInventory(GunTableScreenHandler container) {
         this.stacks = NonNullList.withSize(6, ItemStack.EMPTY);
         this.container = container;
+        this.recipeInput = new GunTableInventory.CustomRecipeInput(this);
     }
 
     @Override
@@ -37,9 +40,8 @@ public class GunTableInventory implements Container, RecipeInput {
         return this.stacks.get(slot);
     }
 
-    @Override
-    public int size() {
-        return 5;
+    public ItemStack getRecipeItem(int slot) {
+        return this.getItem(slot);
     }
 
     @Override
@@ -75,6 +77,19 @@ public class GunTableInventory implements Container, RecipeInput {
     @Override
     public void clearContent() {
         this.stacks.clear();
+    }
+
+    public record CustomRecipeInput(GunTableInventory inventory) implements RecipeInput {
+
+        @Override
+        public @NotNull ItemStack getItem(int i) {
+            return inventory.getRecipeItem(i);
+        }
+
+        @Override
+        public int size() {
+            return 5;
+        }
     }
 
 }

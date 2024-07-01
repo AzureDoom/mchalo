@@ -61,10 +61,10 @@ public class GunTableScreenHandler extends AbstractContainerMenu {
         if (!world.isClientSide) {
             var serverPlayerEntity = (ServerPlayer) player;
             var itemStack = ItemStack.EMPTY;
-            var optional = world.getServer().getRecipeManager().getRecipeFor(Type.INSTANCE, craftingInventory, world);
+            var optional = world.getServer().getRecipeManager().getRecipeFor(Type.INSTANCE, craftingInventory.recipeInput, world);
             if (optional.isPresent()) {
                 var craftingRecipe = optional.get();
-                itemStack = craftingRecipe.value().assemble(craftingInventory, level.registryAccess());
+                itemStack = craftingRecipe.value().assemble(craftingInventory.recipeInput, level.registryAccess());
             }
 
             craftingInventory.setItem(5, itemStack);
