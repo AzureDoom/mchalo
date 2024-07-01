@@ -12,13 +12,13 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import mod.azure.mchalo.NeoForgeMod;
+import mod.azure.mchalo.registry.ModBlocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public class HaloCategory implements DisplayCategory<HaloDisplay> {
 	public static final Component TITLE = Component.translatable("rei.mchalo.crafting");
-	public static final EntryStack<ItemStack> ICON = EntryStacks.of(NeoForgeMod.Blocks.GUN_TABLE.get());
+	public static final EntryStack<ItemStack> ICON = EntryStacks.of(ModBlocks.GUN_TABLE.get());
 
 	@Override
 	public Renderer getIcon() {
