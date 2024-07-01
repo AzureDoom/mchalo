@@ -7,7 +7,7 @@ neoForge {
     neoFormVersion = "1.21-20240613.152323"
 
     accessTransformers = ["../neoforge/src/main/resources/META-INF/accesstransformer.cfg"]
-
+    validateAccessTransformers = true
     parchment {
         minecraftVersion = "${parchment_minecraft}"
         mappingsVersion = "${parchment_version}"
