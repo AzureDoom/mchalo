@@ -1,4 +1,3 @@
-v2.0.3
+v2.0.4
 
-- Fixed Fabric code so building is possible again, so now released for Fabric!
-- Added Opening sound to Energy Sword.
+- Fixed crash due to change in AzureLibs Lightblock registration. 
