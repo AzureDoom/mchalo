@@ -1,6 +1,7 @@
 package mod.azure.mchalo.entity.projectiles.helper;
 
 import mod.azure.azurelib.common.internal.common.blocks.TickingLightEntity;
+import mod.azure.azurelib.common.internal.common.registry.AzureBlocksRegistry;
 import mod.azure.azurelib.common.platform.Services;
 import mod.azure.mchalo.entity.projectiles.*;
 import mod.azure.mchalo.item.HaloGunBase;
@@ -59,7 +60,7 @@ public class CommonHelper {
         if (lightBlockPos == null) {
             lightBlockPos = CommonHelper.findFreeSpace(entity.level(), entity.blockPosition());
             if (lightBlockPos == null) return;
-            entity.level().setBlockAndUpdate(lightBlockPos, Services.PLATFORM.getTickingLightBlock().defaultBlockState());
+            entity.level().setBlockAndUpdate(lightBlockPos, AzureBlocksRegistry.TICKING_LIGHT_BLOCK.get().defaultBlockState());
         } else if (CommonHelper.checkDistance(lightBlockPos, entity.blockPosition()) && entity.level().getBlockEntity(lightBlockPos) instanceof TickingLightEntity tickingLightEntity) {
             tickingLightEntity.refresh(isInWaterBlock ? 20 : 0);
         }
@@ -83,7 +84,7 @@ public class CommonHelper {
                 for (var z : offsets) {
                     var offsetPos = blockPos.offset(x, y, z);
                     var state = world.getBlockState(offsetPos);
-                    if (state.isAir() || state.getBlock().equals(Services.PLATFORM.getTickingLightBlock()))
+                    if (state.isAir() || state.getBlock().equals(AzureBlocksRegistry.TICKING_LIGHT_BLOCK.get()))
                         return offsetPos;
                 }
         return null;
