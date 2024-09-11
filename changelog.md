@@ -1,3 +1,4 @@
-v2.0.4
+v2.0.5
 
-- Fixed crash due to change in AzureLibs Lightblock registration. 
+- Updated for latest AzureLib changes. 
+- Fixes guns animating in inventory slots, only sword should.
