@@ -81,19 +81,18 @@ public class NeedleEntity extends AbstractArrow implements GeoEntity {
         if (idleTicks < idleOpt) super.tick();
         if (this.tickCount >= 40) this.remove(Entity.RemovalReason.DISCARDED);
         CommonHelper.spawnLightSource(this, this.level().isWaterAt(blockPosition()));
-        var world = this.level();
-        var livingEntities = world.getEntitiesOfClass(Monster.class,
-                new AABB(this.getX() - 6.0, this.getY() - 6.0, this.getZ() - 6.0, this.getX() + 6.0, this.getY() + 6.0,
-                        this.getZ() + 6.0), entity1 -> entity1 != this.getOwner());
+        var livingEntities = level().getEntitiesOfClass(
+                LivingEntity.class,
+                this.getBoundingBox().inflate(9),
+                livingEntity -> !CommonHelper.IS_CREATIVEorSPECTATOR.test(livingEntity)
+        );
         if (!livingEntities.isEmpty()) {
             var first = livingEntities.getFirst();
             var entityPos = new Vec3(first.getX(), first.getY() + first.getEyeHeight(), first.getZ());
-            var distance = entityPos.subtract(this.getX(), this.getY() + this.getEyeHeight(), this.getZ());
-            var entityDirect = distance.normalize();
-            var arrowDirect = this.getDeltaMovement().normalize();
-            var newPath = entityDirect.add(arrowDirect.multiply(4.0, 4.0, 4.0)).normalize();
-            var speed = this.getDeltaMovement().length();
-            this.setDeltaMovement(newPath.multiply(speed, speed, speed));
+            var directionToTarget = entityPos.subtract(this.position()).normalize();
+            var speed = 0.5;
+            var newVelocity = directionToTarget.scale(speed);
+            this.setDeltaMovement(newVelocity);
         }
     }
 

@@ -13,10 +13,13 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
-public class CommonHelper {
+import java.util.function.Predicate;
 
-    private CommonHelper() {
-    }
+public record CommonHelper() {
+
+    public static final Predicate<LivingEntity> IS_CREATIVEorSPECTATOR = livingEntity -> livingEntity instanceof Player player && (player
+            .isCreative()
+            || player.isSpectator());
 
     public static void setOnFire(Projectile projectile) {
         if (projectile.isOnFire())
